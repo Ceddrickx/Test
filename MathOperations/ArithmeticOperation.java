@@ -54,6 +54,5 @@ public class ArithmeticOperation {
     }
 }
 
-// aaaaaaaaaaaaaaaa
-
+// aaaaaaaaaaaaaaaaaaa
 
