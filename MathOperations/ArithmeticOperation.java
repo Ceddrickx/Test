@@ -50,7 +50,7 @@ public class ArithmeticOperation {
 
         double result = num1 * num2; // Perform multiplication
 
-        System.out.println("Multiplication result: " + result); // Output the result
+        System.out.println("Multiplication result: " + result); // Output the resulta
     }
 }
 
