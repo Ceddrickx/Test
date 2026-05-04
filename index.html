@@ -335,11 +335,30 @@
       margin-bottom: 12px;
     }
     .card-label {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
       font-size: 0.78rem;
       font-weight: 600;
       color: var(--color-text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.04em;
+    }
+    .slide-ref {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      color: var(--color-accent);
+      background: rgba(245,166,35,0.08);
+      border: 1px solid rgba(245,166,35,0.32);
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      line-height: 1.4;
+      text-transform: none;
+      letter-spacing: 0;
     }
     .card-header-right {
       display: flex;
@@ -404,6 +423,31 @@
     .choice-label:hover { border-color: var(--color-primary); background: rgba(79,131,204,0.06); }
     .choice-label input[type="radio"] { accent-color: var(--color-primary); width: 16px; height: 16px; flex-shrink: 0; }
     .choice-label input[type="radio"]:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+    .choice-text {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      min-width: 0;
+    }
+    .choice-mark {
+      min-width: 18px;
+      font-weight: 700;
+    }
+    .choice-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 26px;
+      min-width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      color: var(--color-accent);
+      background: rgba(245,166,35,0.08);
+      font-weight: 700;
+      line-height: 1;
+    }
+    .choice-body { min-width: 0; }
 
     /* Post-submit choice highlighting */
     .question-card.submitted input:disabled,
@@ -483,6 +527,26 @@
     .explanation-block strong { color: var(--color-primary); }
     .explanation-block ul { margin: 6px 0 0 20px; }
     .explanation-block li { margin-bottom: 4px; }
+    .explanation-block li.explanation-correct {
+      color: var(--color-success);
+      font-weight: 600;
+    }
+    .explanation-block li.explanation-wrong .explanation-prefix {
+      color: var(--color-danger);
+      font-weight: 600;
+    }
+    .explanation-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      margin: 0 2px;
+      border-radius: 6px;
+      border: 1px solid currentColor;
+      font-weight: 800;
+      line-height: 1;
+    }
     .alt-answers { margin-top: 8px; color: var(--color-text-secondary); font-style: italic; font-size: 0.85rem; }
     .partial-score { font-weight: 600; color: var(--color-warning); margin-top: 8px; }
     .enum-result-row {
@@ -1211,12 +1275,12 @@
        1. EXAM_CONFIG — SINGLE SOURCE OF TRUTH
     ===================================================== */
     const EXAM_CONFIG = {
-      subjectName:    "YOUR SUBJECT NAME",
-      subjectCode:    "XX-000",
-      topic:          "YOUR TOPIC HERE",
+      subjectName:    "Business Processes",
+      subjectCode:    "BUSPROS-W6",
+      topic:          "Week 6: Financial Accounting (FI) - SAP S/4HANA Using Global Bike",
       authorName:     "Kim Cedrick C. Villar",
-      program:        "BSIT – Mobile and Internet Technologies",
-      school:         "National University – Fairview",
+      program:        "BSIT - Mobile and Internet Technologies",
+      school:         "National University - Fairview",
       githubUrl:      "https://github.com/Ceddrickx",
       timerSeconds:   1200,
       passingPercent: 0.75,
@@ -1234,7 +1298,7 @@
     ===================================================== */
     const DERIVED_KEY = EXAM_CONFIG.subjectCode
       .replace(/[^a-zA-Z0-9]/g, '')
-      .toLowerCase() + '_examState';
+      .toLowerCase() + '_v2_examState';
 
     const TOTAL_TIME = EXAM_CONFIG.timerSeconds;
 
@@ -1246,26 +1310,914 @@
     /* =====================================================
        3. QUESTION BANK — PASTE YOUR QUESTIONS HERE
     ===================================================== */
-    const questionBank = [
-      // -------------------------------------------------------
-      // PASTE YOUR QUESTIONS BELOW THIS LINE.
-      // Paste ONLY question objects separated by commas.
-      // Do NOT paste another "const questionBank = [" wrapper or Markdown ``` fences.
-      // Each question must follow this schema:
-      // {
-      //   id: 1,
-      //   type: "Multiple Choice",  // or "True or False" | "Enumeration" | "Identification" | "Acronym Meaning"
-      //   question: "What is...?",
-      //   slideRef: "",             // ignored
-      //   difficulty: "",           // ignored
-      //   choices: [],              // ignored — use origChoices
-      //   correctAnswer: "Answer",  // string for all types EXCEPT Enumeration (array of strings)
-      //   why: [],                  // ignored — use origWhy
-      //   origChoices: ["A", "B", "C", "D"],
-      //   origWhy: ["Explanation bullet 1", "Explanation bullet 2"],
-      //   altAnswers: []
-      // },
-      // -------------------------------------------------------
+    const questionBank =     [
+          {
+                "id": "mc-1",
+                "type": "Multiple Choice",
+                "question": "What is the PRIMARY goal of Financial Accounting (FI)?",
+                "slideRef": "📄 Reference: Slide 6 — \"Goal of Financial Accounting (FI)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "B. To collect transactional data that provides a foundation for preparing standard reports",
+                "why": [],
+                "origChoices": [
+                      "A. To manage employee payroll and salaries",
+                      "B. To collect transactional data that provides a foundation for preparing standard reports",
+                      "C. To monitor the production and manufacturing process",
+                      "D. To plan future budgets and cost allocations"
+                ],
+                "origWhy": [
+                      "Why B is correct: The FI module is specifically designed to collect transactional data that forms the foundation for standard financial reports such as the Balance Sheet, Income Statement, and Statement of Cash Flows. These reports reflect what happened financially in a business.",
+                      "Why A is wrong: Payroll and salaries are typically handled by the HR (Human Resources) or Payroll module in SAP, not Financial Accounting.",
+                      "Why C is wrong: Production and manufacturing are managed under the PP (Production Planning) module. FI records the financial impact of production activities but does not manage the process itself.",
+                      "Why D is wrong: Budget planning and cost allocation are functions of the CO (Managerial Accounting / Controlling) module, not FI."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-2",
+                "type": "Multiple Choice",
+                "question": "Which of the following is NOT listed as a standard report produced by the Financial Accounting module?",
+                "slideRef": "📄 Reference: Slide 6 — \"Goal of Financial Accounting (FI)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. Inventory Report",
+                "why": [],
+                "origChoices": [
+                      "A. Balance Sheet",
+                      "B. Income Statement",
+                      "C. Inventory Report",
+                      "D. Statement of Cash Flows"
+                ],
+                "origWhy": [
+                      "Why C is correct: The Inventory Report is not part of the standard financial accounting report portfolio. Inventory is handled under Materials Management (MM) and relates to operational data, not financial statement reporting.",
+                      "Why A is wrong: The Balance Sheet is explicitly listed as one of the three standard FI reports. It shows assets, liabilities, and equity at a point in time.",
+                      "Why B is wrong: The Income Statement is also a standard FI report. It presents revenues and expenses for a given period.",
+                      "Why D is wrong: The Statement of Cash Flows is the third standard FI report, tracking inflows and outflows of cash over a period."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-3",
+                "type": "Multiple Choice",
+                "question": "In SAP FI, what does a \"Company Code\" represent?",
+                "slideRef": "📄 Reference: Slide 8 — \"FI Organizational Structure\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "B. An independent legal accounting unit where balanced books are prepared",
+                "why": [],
+                "origChoices": [
+                      "A. A global SAP environment shared across all companies",
+                      "B. An independent legal accounting unit where balanced books are prepared",
+                      "C. A classification scheme for grouping general ledger accounts",
+                      "D. A tool that monitors customer credit limits"
+                ],
+                "origWhy": [
+                      "Why B is correct: A Company Code represents an independent legal accounting unit. This is the level where a balanced set of books — as required by law — is prepared. Each country operation (e.g., US, Germany) can have its own Company Code.",
+                      "Why A is wrong: That describes a \"Client\" — the highest-level independent environment in the SAP system. A Client can contain multiple Company Codes.",
+                      "Why C is wrong: That describes the \"Chart of Accounts,\" which is a classification scheme for G/L accounts used by one or more company codes.",
+                      "Why D is wrong: That describes the \"Credit Control Area,\" which is an organizational entity that grants and monitors credit limits for customers."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-4",
+                "type": "Multiple Choice",
+                "question": "In the Global Bike enterprise structure, which element spans across ALL company codes as a single global unit?",
+                "slideRef": "📄 Reference: Slide 11 — \"Global Bike Enterprise Structure in SAP ERP (Accounting)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "B. Credit Control Area (GL00)",
+                "why": [],
+                "origChoices": [
+                      "A. Business Area — Bikes (BI00)",
+                      "B. Credit Control Area (GL00)",
+                      "C. Controlling Area North America (NA00)",
+                      "D. Company Code US00"
+                ],
+                "origWhy": [
+                      "Why B is correct: In the Global Bike structure, the Credit Control Area is defined globally as GL00, meaning it covers all company codes under the Global Bike client. It monitors credit limits for all customers globally.",
+                      "Why A is wrong: The Business Area — Bikes (BI00) spans across company codes but represents a specific area of operations, not a credit monitoring function. Also, the Credit Control Area is specifically described as \"global.\"",
+                      "Why C is wrong: CA North America (NA00) is only one of several Controlling Areas (others include EU00 and AS00), meaning it is regional, not global.",
+                      "Why D is wrong: CC US00 is a single Company Code representing the US operations only, not a global unit."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-5",
+                "type": "Multiple Choice",
+                "question": "What is a \"Chart of Accounts\" in SAP FI?",
+                "slideRef": "📄 Reference: Slide 9 — \"FI Organizational Structure\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "B. A classification scheme of general ledger accounts providing a framework for recording financial values",
+                "why": [],
+                "origChoices": [
+                      "A. A report showing customer payment history",
+                      "B. A classification scheme of general ledger accounts providing a framework for recording financial values",
+                      "C. A list of all company codes within a client",
+                      "D. A document that records individual business transactions"
+                ],
+                "origWhy": [
+                      "Why B is correct: The Chart of Accounts is specifically described as a classification scheme consisting of a group of G/L accounts. It provides a framework for the orderly recording of accounting data. It can be shared by one or more company codes.",
+                      "Why A is wrong: Customer payment history is part of the Accounts Receivable sub-ledger (FI-AR), not the Chart of Accounts.",
+                      "Why C is wrong: The list of company codes is part of the FI Organizational Structure concept, not the Chart of Accounts.",
+                      "Why D is wrong: Individual business transactions are recorded in SAP Documents, which are governed by the SAP Document Principle — not the Chart of Accounts."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-6",
+                "type": "Multiple Choice",
+                "question": "Which FI sub-module handles information about customers who purchase the enterprise's goods and services?",
+                "slideRef": "📄 Reference: Slide 15 — \"FI Master Data (Accounts Receivable Sub-Ledger FI-AR)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. FI-AR (Accounts Receivable Sub-Ledger)",
+                "why": [],
+                "origChoices": [
+                      "A. FI-AP (Accounts Payable Sub-Ledger)",
+                      "B. FI-GL (General Ledger)",
+                      "C. FI-AR (Accounts Receivable Sub-Ledger)",
+                      "D. FI-CO (Controlling)"
+                ],
+                "origWhy": [
+                      "Why C is correct: FI-AR (Accounts Receivable) specifically tracks information about customers — including sales made to them and payments received from them. It is closely integrated with the SD (Sales and Distribution) module.",
+                      "Why A is wrong: FI-AP (Accounts Payable) tracks vendors — the companies or individuals from whom the enterprise purchases goods and services. It is the opposite of AR.",
+                      "Why B is wrong: FI-GL is the General Ledger, which holds the overall account balances. Individual customer accounts flow into the GL automatically but are maintained in the AR sub-ledger.",
+                      "Why D is wrong: FI-CO is not a standard sub-ledger label. CO (Controlling) is a separate module that handles managerial/internal accounting."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-7",
+                "type": "Multiple Choice",
+                "question": "When a billing transaction occurs in the Sales and Distribution (SD) module, what automatically happens in Financial Accounting (FI)?",
+                "slideRef": "📄 Reference: Slide 15 — \"FI Master Data (Accounts Receivable Sub-Ledger FI-AR)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "B. A journal entry for the sales activity is generated in FI",
+                "why": [],
+                "origChoices": [
+                      "A. A purchase order is created for the vendor",
+                      "B. A journal entry for the sales activity is generated in FI",
+                      "C. The production plan is updated in PP",
+                      "D. The inventory count is manually adjusted in MM"
+                ],
+                "origWhy": [
+                      "Why B is correct: The material states there is \"substantive and important integration between SD and FI.\" Billings in SD automatically generate FI journal entries for the sales activity — this is the essence of ERP integration.",
+                      "Why A is wrong: Purchase orders are created in the MM (Materials Management) module for vendor transactions, not as a result of a billing event in SD.",
+                      "Why C is wrong: The production plan in PP is not updated when a billing event occurs in SD. These are separate processes.",
+                      "Why D is wrong: Inventory is adjusted automatically through goods movement transactions in MM, not manually, and not as a direct result of SD billing alone."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-8",
+                "type": "Multiple Choice",
+                "question": "The Accounts Payable Sub-Ledger (FI-AP) has a \"substantive and important integration\" with which SAP module?",
+                "slideRef": "📄 Reference: Slide 16 — \"FI Master Data (Accounts Payable Sub-Ledger FI-AP)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. Materials Management (MM)",
+                "why": [],
+                "origChoices": [
+                      "A. Sales and Distribution (SD)",
+                      "B. Production Planning (PP)",
+                      "C. Materials Management (MM)",
+                      "D. Human Resources (HR)"
+                ],
+                "origWhy": [
+                      "Why C is correct: The material explicitly states that FI-AP has substantive and important integration with MM (Materials Management). Purchase and goods receipt activities in MM automatically generate FI journal entries in the Accounts Payable sub-ledger.",
+                      "Why A is wrong: SD integrates primarily with FI-AR (Accounts Receivable), not Accounts Payable. SD handles sales to customers, while AP handles payments to vendors.",
+                      "Why B is wrong: PP (Production Planning) integrates with FI as well, but the specific and direct integration mentioned for FI-AP is with MM, not PP.",
+                      "Why D is wrong: HR manages employee data and payroll. It has its own integration with FI for payroll postings, but is not cited as the key integration partner for FI-AP."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-9",
+                "type": "Multiple Choice",
+                "question": "In the Balance Sheet equation, which of the following correctly represents the accounting equation?",
+                "slideRef": "📄 Reference: Slide 21 — \"FI Reporting (Balance Sheet)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "B. Assets = Liabilities + Equity",
+                "why": [],
+                "origChoices": [
+                      "A. Assets = Revenue − Expenses",
+                      "B. Assets = Liabilities + Equity",
+                      "C. Revenue − Expenses = Net Income",
+                      "D. Assets − Liabilities = Revenue"
+                ],
+                "origWhy": [
+                      "Why B is correct: The fundamental accounting equation is Assets = Liabilities + Equity. This is explicitly stated in the FI module: Assets represent what the company owns, Liabilities represent what it owes, and Equity is the difference. The Balance Sheet always balances using this equation.",
+                      "Why A is wrong: Assets = Revenue − Expenses is incorrect. This formula describes Net Income (from the Income Statement), not the Balance Sheet.",
+                      "Why C is wrong: Revenue − Expenses = Net Income is actually the Income Statement formula. It is correct as a formula but does NOT represent the Balance Sheet equation.",
+                      "Why D is wrong: Assets − Liabilities = Revenue is mathematically incorrect. Assets − Liabilities = Equity (Owner's Equity), not Revenue."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-10",
+                "type": "Multiple Choice",
+                "question": "Based on the Balance Sheet example, what is the Total Assets value? Using the data shown in the Balance Sheet Example on Slide 22: ┌─────────────────────────────────────────────────┐ │ ASSETS │ │ Cash 1,000 │ │ Accounts Receivable 3,000 │ │ Equipment 500 │ │ ───────── │ │ Total Assets = ??? │ └─────────────────────────────────────────────────┘",
+                "slideRef": "📄 Reference: Slide 22 — \"FI Reporting (Balance Sheet Example)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. 4,500",
+                "why": [],
+                "origChoices": [
+                      "A. 2,250",
+                      "B. 1,250",
+                      "C. 4,500",
+                      "D. 3,000"
+                ],
+                "origWhy": [
+                      "COMPUTATION Cash + Accounts Receivable + Equipment = Total Assets 1,000 + 3,000 + 500 = 4,500",
+                      "VERIFICATION (Assets must equal Liabilities + Equity) Total Liabilities (2,250) + Total Equity (2,250) = 4,500 ✔",
+                      "Why C is correct: Adding all three asset line items from the Balance Sheet example gives: 1,000 (Cash) + 3,000 (Accounts Receivable) + 500 (Equipment) = 4,500. This total is confirmed by the other side of the Balance Sheet: Total Liabilities (2,250) + Total Equity (2,250) = 4,500, proving the Balance Sheet is in balance.",
+                      "Why A is wrong: 2,250 represents both the Total Liabilities AND Total Equity individually (each side equals 2,250), not the Total Assets.",
+                      "Why B is wrong: 1,250 is the Net Income from the Income Statement example (Slide 24), not Total Assets from the Balance Sheet.",
+                      "Why D is wrong: 3,000 is the value of only ONE asset — Accounts Receivable — not the sum of all assets. You must add all three asset items together."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-11",
+                "type": "Multiple Choice",
+                "question": "Based on the Income Statement example, what is the Net Income? Using the data shown in the Income Statement Example on Slide 24: ┌─────────────────────────────────────────────────┐ │ REVENUE │ │ Sales 11,000 │ │ Deductions 750 │ │ Total Revenue 10,250 │ │ │ │ OPERATING EXPENSES │ │ Cost of Goods Sold 4,500 │ │ Operating Expenses 3,750 │ │ Total Expenses 8,250 │ │ ───────── │ │ Net Income Before Taxes 2,000 │ │ Taxes 750 │ │ ───────── │ │ Net Income = ??? │ └─────────────────────────────────────────────────┘",
+                "slideRef": "📄 Reference: Slide 24 — \"FI Reporting (Income Statement Example)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. 1,250",
+                "why": [],
+                "origChoices": [
+                      "A. 2,000",
+                      "B. 10,250",
+                      "C. 1,250",
+                      "D. 8,250"
+                ],
+                "origWhy": [
+                      "COMPUTATION (Step-by-Step)",
+                      "Step 1: Total Revenue = Sales − Deductions = 11,000 − 750 = 10,250",
+                      "Step 2: Total Expenses = COGS + Operating Expenses = 4,500 + 3,750 = 8,250",
+                      "Step 3: Net Income Before Taxes = Total Revenue − Total Expenses = 10,250 − 8,250 = 2,000",
+                      "Step 4: Net Income = Net Income Before Taxes − Taxes = 2,000 − 750 = 1,250 ✔",
+                      "Why C is correct: Following the four steps above, the final Net Income after subtracting taxes (750) from the Net Income Before Taxes (2,000) gives 1,250. This is the \"bottom line\" of the Income Statement.",
+                      "Why A is wrong: 2,000 is the Net Income BEFORE Taxes — it is the result after Step 3 only. You still need to subtract Taxes (750) to get the final Net Income.",
+                      "Why B is wrong: 10,250 is the Total Revenue (Step 1 result). It is the \"top line\" of the Income Statement, not the final Net Income.",
+                      "Why D is wrong: 8,250 is the Total Expenses (Step 2 result). This is what the company spent, not what it earned (Net Income)."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-12",
+                "type": "Multiple Choice",
+                "question": "What is the purpose of \"Audit Trails\" in financial accounting?",
+                "slideRef": "📄 Reference: Slide 26 — \"Accountants and Audit Trails\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "B. To allow an auditor to trace account balances on financial statements back to the supporting transactions",
+                "why": [],
+                "origChoices": [
+                      "A. To approve new customer credit applications",
+                      "B. To allow an auditor to trace account balances on financial statements back to the supporting transactions",
+                      "C. To generate automatic journal entries when goods are received",
+                      "D. To define the chart of accounts for a company code"
+                ],
+                "origWhy": [
+                      "Why B is correct: Audit trails work in two directions: (1) starting from an account balance on a financial statement and tracing back to supporting transactions, and (2) tracing individual transactions forward to their effect on account balances. This supports transparency and internal control.",
+                      "Why A is wrong: Credit applications are managed by the Credit Control Area, not audit trails.",
+                      "Why C is wrong: Automatic journal entries for goods receipt are a function of the MM-FI integration, not audit trails.",
+                      "Why D is wrong: Defining a Chart of Accounts is an organizational structure and configuration task, not a function of audit trails."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-13",
+                "type": "Multiple Choice",
+                "question": "According to the SAP Document Principle, once a financial document is written to the SAP database, what happens to it?",
+                "slideRef": "📄 Reference: Slide 27 — \"SAP Document Principle\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. It cannot be deleted from the database, though it can be changed to some degree",
+                "why": [],
+                "origChoices": [
+                      "A. It is automatically deleted after 90 days",
+                      "B. It can be fully modified or deleted by any authorized user",
+                      "C. It cannot be deleted from the database, though it can be changed to some degree",
+                      "D. It is archived offline and cannot be accessed again"
+                ],
+                "origWhy": [
+                      "Why C is correct: The SAP Document Principle explicitly states that once a financial document is written to the SAP database, it CANNOT be deleted. However, it can be changed to some degree (such as editing certain header fields). This ensures a reliable audit trail.",
+                      "Why A is wrong: There is no automatic 90-day deletion mentioned anywhere in the module. Deleting financial documents would violate internal control and legal requirements.",
+                      "Why B is wrong: Documents cannot be fully deleted. The ability to change documents is also limited — not all fields can be modified — protecting the integrity of financial records.",
+                      "Why D is wrong: Documents remain accessible in the SAP database. They can be recalled using their unique document number at any time. \"Archiving offline and inaccessible\" contradicts this."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-14",
+                "type": "Multiple Choice",
+                "question": "Which of the following best describes the \"Credit Control Area\" in SAP FI?",
+                "slideRef": "📄 Reference: Slide 9 — \"FI Organizational Structure\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. An organizational entity that grants and monitors a credit limit for customers",
+                "why": [],
+                "origChoices": [
+                      "A. A scheme that classifies all G/L accounts",
+                      "B. An area that represents the physical location of a business unit",
+                      "C. An organizational entity that grants and monitors a credit limit for customers",
+                      "D. A ledger that records all vendor transactions"
+                ],
+                "origWhy": [
+                      "Why C is correct: The Credit Control Area is explicitly defined as an organizational entity that grants and monitors credit limits for customers. It can include one or more company codes, and in Global Bike, it is set up globally (GL00).",
+                      "Why A is wrong: A scheme that classifies G/L accounts describes the Chart of Accounts, not the Credit Control Area.",
+                      "Why B is wrong: Physical business locations are more associated with Plants in the MM module or Business Areas in FI — not the Credit Control Area.",
+                      "Why D is wrong: A ledger recording vendor transactions describes the Accounts Payable Sub-Ledger (FI-AP), not the Credit Control Area."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-15",
+                "type": "Multiple Choice",
+                "question": "Which of the following is an EXTERNAL target group of Financial Accounting reports?",
+                "slideRef": "📄 Reference: Slide 7 — \"Target Groups\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. Taxing Authorities",
+                "why": [],
+                "origChoices": [
+                      "A. Senior Management",
+                      "B. Administrative Staff",
+                      "C. Taxing Authorities",
+                      "D. Executives"
+                ],
+                "origWhy": [
+                      "Why C is correct: Taxing Authorities are explicitly listed as an external target group. External parties include Legal Authorities, Banks, Auditors, Shareholders, Insurance, Taxing Authorities, Media, and Financial Analysts.",
+                      "Why A is wrong: Senior Management is listed as an INTERNAL target group. They receive FI reports for internal decision-making, not as an outside party.",
+                      "Why B is wrong: Administrative Staff is also an INTERNAL target group. They use FI information to support internal operations.",
+                      "Why D is wrong: Executives are INTERNAL users of FI reporting. They are inside the organization and use reports to oversee company performance."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-16",
+                "type": "Multiple Choice",
+                "question": "In SAP, what uniquely identifies and stores a business transaction that impacts FI?",
+                "slideRef": "📄 Reference: Slide 27 — \"SAP Document Principle\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "B. A uniquely numbered electronic document",
+                "why": [],
+                "origChoices": [
+                      "A. A Customer Master Record",
+                      "B. A uniquely numbered electronic document",
+                      "C. A General Ledger Account",
+                      "D. A Chart of Accounts Entry"
+                ],
+                "origWhy": [
+                      "Why B is correct: The SAP Document Principle states that each business transaction impacting FI writes data to the SAP database as a uniquely numbered electronic document. This document number can be used to recall the transaction later and contains critical information like the responsible person, date, time, and commercial content.",
+                      "Why A is wrong: A Customer Master Record stores standing data about a customer (address, payment terms, etc.), not individual transaction records.",
+                      "Why C is wrong: A G/L Account is a category or \"bucket\" that accumulates the effects of many transactions. It does not uniquely identify a single transaction.",
+                      "Why D is wrong: A Chart of Accounts Entry is a template/framework for account categories. It does not store individual transaction data."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-17",
+                "type": "Multiple Choice",
+                "question": "The General Ledger (G/L) in SAP FI is created by what unique combination?",
+                "slideRef": "📄 Reference: Slide 13 — \"FI Master Data (General Ledger G/L Accounts)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. Company Code + Chart of Accounts",
+                "why": [],
+                "origChoices": [
+                      "A. Credit Control Area + Business Area",
+                      "B. Client + Chart of Accounts",
+                      "C. Company Code + Chart of Accounts",
+                      "D. Company Code + Credit Control Area"
+                ],
+                "origWhy": [
+                      "Why C is correct: The material explicitly states that \"the unique combination of Company Code and Chart of Account creates a data storage area called a General Ledger.\" This combination determines which accounts are used and for which legal entity.",
+                      "Why A is wrong: Credit Control Area + Business Area does not form a General Ledger. These are separate organizational elements with different purposes.",
+                      "Why B is wrong: The Client is the highest-level SAP element and is shared globally. Combining it with the Chart of Accounts does not define a specific General Ledger for a legal entity.",
+                      "Why D is wrong: Company Code + Credit Control Area defines the credit monitoring scope, not the General Ledger. The Credit Control Area is for managing customer credit, not for recording accounting data."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-18",
+                "type": "Multiple Choice",
+                "question": "In the Income Statement, what do \"Revenues\" represent in simple terms?",
+                "slideRef": "📄 Reference: Slide 23 — \"FI Reporting (Income Statement)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. Inflows of cash from selling activities or disposal of company assets",
+                "why": [],
+                "origChoices": [
+                      "A. Outflows of cash to support company operations",
+                      "B. The total value of all company assets",
+                      "C. Inflows of cash from selling activities or disposal of company assets",
+                      "D. The balance remaining after all liabilities are paid"
+                ],
+                "origWhy": [
+                      "Why C is correct: The module defines revenues, in simple terms, as \"inflows of cash as a result of selling activities or the disposal of company assets.\" This is the money coming IN to the business.",
+                      "Why A is wrong: Outflows of cash or creation of liabilities describe EXPENSES, not revenues. Expenses are the opposite of revenues.",
+                      "Why B is wrong: The total value of company assets is what appears on the Balance Sheet, not the Income Statement. Revenues are a flow concept, not a stock of assets.",
+                      "Why D is wrong: The balance remaining after liabilities describes EQUITY (Assets − Liabilities = Equity) — a Balance Sheet concept, not revenues."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-19",
+                "type": "Multiple Choice",
+                "question": "Which of the following is described as a \"Business Area\" in Global Bike's FI structure?",
+                "slideRef": "📄 Reference: Slide 10 — \"Global Bike Structure for Financial Accounting\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. Bikes (BI00)",
+                "why": [],
+                "origChoices": [
+                      "A. Global Bike Inc. (US)",
+                      "B. Global Bike Germany GmbH",
+                      "C. Bikes (BI00)",
+                      "D. Chart of Accounts GL00"
+                ],
+                "origWhy": [
+                      "Why C is correct: The material explicitly identifies \"Bikes Business Area\" (code BI00) as the Business Area in Global Bike's FI structure. A Business Area represents a separate area of operations or responsibilities, and financial statements can be created for it for internal reporting purposes.",
+                      "Why A is wrong: Global Bike Inc. (US) is a Company Code (CC US00), not a Business Area. It is an independent legal accounting unit.",
+                      "Why B is wrong: Global Bike Germany GmbH is also a Company Code (CC DE00). It represents the German legal entity, not a Business Area.",
+                      "Why D is wrong: Chart of Accounts GL00 is the globally shared Chart of Accounts — a classification scheme for G/L accounts — not a Business Area."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "mc-20",
+                "type": "Multiple Choice",
+                "question": "Which of the following modules is listed as an integration point with the SAP FI module?",
+                "slideRef": "📄 Reference: Slide 29 — \"SAP FI Module\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "C. Production Planning and Execution (PP)",
+                "why": [],
+                "origChoices": [
+                      "A. Customer Relationship Management (CRM)",
+                      "B. Supply Chain Management (SCM)",
+                      "C. Production Planning and Execution (PP)",
+                      "D. Business Intelligence (BI)"
+                ],
+                "origWhy": [
+                      "Why C is correct: The material explicitly lists Production Planning and Execution (PP) as one of the SAP modules fully integrated with FI, alongside SD, MM, and CO.",
+                      "Why A is wrong: CRM (Customer Relationship Management) is not listed in the module as a direct FI integration point. It is a separate SAP product suite.",
+                      "Why B is wrong: SCM (Supply Chain Management) is not mentioned as a specific FI integration point in this module.",
+                      "Why D is wrong: BI (Business Intelligence) / SAP Analytics is a reporting and analytics platform. While FI data can feed into BI, it is not listed as a module that is \"fully integrated\" with FI in the same operational sense."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-1",
+                "type": "True or False",
+                "question": "Financial Accounting reports are primarily, but not exclusively, directed at external parties.",
+                "slideRef": "📄 Reference: Slide 6 — \"Goal of Financial Accounting (FI)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "True",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The module clearly states that FI reports \"are primarily, but not exclusively, directed at external parties.\" This means external parties (like banks, auditors, and taxing authorities) are the main audience, but internal users (executives, employees) also use FI reports. The word \"primarily\" is key — FI is externally focused but not exclusively so."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-2",
+                "type": "True or False",
+                "question": "In SAP, a Client can only contain one Company Code.",
+                "slideRef": "📄 Reference: Slide 8 — \"FI Organizational Structure\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "False",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The module explicitly states that \"a client may have MORE than one company code.\" This is one of the fundamental design principles of SAP — a single client (like Global Bike) can contain multiple company codes representing different legal entities in different countries (e.g., CC US00 for USA, CC DE00 for Germany, etc.). A one-to-one relationship between Client and Company Code does not exist."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-3",
+                "type": "True or False",
+                "question": "The SAP Document Principle allows financial documents to be permanently deleted from the database once they have been fully processed.",
+                "slideRef": "📄 Reference: Slide 27 — \"SAP Document Principle\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "False",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The SAP Document Principle explicitly states that \"a financial document...CANNOT be deleted from the database.\" This is a deliberate design to maintain a complete audit trail and support legal compliance requirements. Once posted, a financial document remains in the system permanently. It can be changed to some degree (e.g., certain descriptive fields), but never deleted."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-4",
+                "type": "True or False",
+                "question": "The Balance Sheet shows an organization's financial position at a specific point in time.",
+                "slideRef": "📄 Reference: Slide 21 — \"FI Reporting (Balance Sheet)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "True",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The module defines the Balance Sheet as a \"presentation of an organization's Assets, Liabilities, and Equity AT A POINT IN TIME.\" This distinguishes it from the Income Statement and Statement of Cash Flows, which cover a period of time (monthly, quarterly, annually). For example, a Balance Sheet dated December 31 shows the company's financial position on that exact date only."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-5",
+                "type": "True or False",
+                "question": "The Accounts Receivable Sub-Ledger (FI-AR) tracks information about vendors from whom the enterprise purchases goods.",
+                "slideRef": "📄 Reference: Slide 15 — \"FI Master Data (Accounts Receivable Sub-Ledger FI-AR)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "False",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "FI-AR (Accounts RECEIVABLE) tracks information about CUSTOMERS — those who purchase goods and services FROM the enterprise. The sub-ledger that tracks vendors (suppliers) is FI-AP (Accounts PAYABLE). This is a common point of confusion: \"Receivable\" means money the company WILL RECEIVE from customers; \"Payable\" means money the company MUST PAY to vendors."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-6",
+                "type": "True or False",
+                "question": "In Global Bike's SAP structure, the Chart of Accounts code is GL00 and is shared globally across all company codes.",
+                "slideRef": "📄 Reference: Slide 11 — \"Global Bike Enterprise Structure in SAP ERP (Accounting)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "True",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The enterprise structure diagram shows \"Chart of Accounts (global) GL00\" as a single, globally shared element. This means all company codes under the Global Bike client use the same chart of accounts (GL00). Having one shared chart of accounts enables consistent financial reporting across all entities worldwide."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-7",
+                "type": "True or False",
+                "question": "The Income Statement covers a specific period of time, such as monthly, quarterly, or yearly.",
+                "slideRef": "📄 Reference: Slide 23 — \"FI Reporting (Income Statement)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "True",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The module defines the Income Statement as the \"presentation of an organization's revenues and expenses for a GIVEN PERIOD OF TIME (e.g. monthly, quarterly, or yearly).\" This is what distinguishes it from the Balance Sheet (which is at a point in time). The Income Statement measures financial PERFORMANCE over time, while the Balance Sheet measures financial POSITION at a moment."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-8",
+                "type": "True or False",
+                "question": "Financial statements can be created for Business Areas and used for internal reporting purposes.",
+                "slideRef": "📄 Reference: Slide 9 — \"FI Organizational Structure\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "True",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The module explicitly states that a Business Area \"represents a separate area of operations or responsibilities within an organization\" and that \"financial statements can be created for business areas, and these statements can be used for various INTERNAL reporting purposes.\" This makes Business Areas useful for segment reporting without creating separate legal entities."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-9",
+                "type": "True or False",
+                "question": "Purchase and goods receipt activities in the MM module do NOT generate any entries in Financial Accounting (FI).",
+                "slideRef": "📄 Reference: Slide 16 — \"FI Master Data (Accounts Payable Sub-Ledger FI-AP)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "False",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The module directly contradicts this statement: \"Purchase and goods receipt activities in MM GENERATE FI journal entries.\" This is the integration between MM and FI-AP. When goods are received in the warehouse (goods receipt) or an invoice is received from a vendor, it automatically creates accounting entries in the FI module — this is the core value of an integrated ERP system like SAP."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "tf-10",
+                "type": "True or False",
+                "question": "The SAP Document Principle provides a framework for a strong internal control system, which is a legal requirement in most countries.",
+                "slideRef": "📄 Reference: Slide 27 — \"SAP Document Principle\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "True",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The module states that \"the SAP document principle provides a solid and important framework for a strong internal control system – a REQUIREMENT OF LAW for companies that operate in most countries in the world.\" This is why documents cannot be deleted — maintaining a complete, accurate, and tamper-proof record of transactions is legally mandated in most jurisdictions for financial reporting and audit purposes."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "enum-1",
+                "type": "Enumeration",
+                "question": "Enumerate the THREE (3) standard reports produced by the Financial Accounting (FI) module.",
+                "slideRef": "📄 Reference: Slide 6 — \"Goal of Financial Accounting (FI)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": [
+                      "Balance Sheet",
+                      "Income Statement",
+                      "Statement of Cash Flows"
+                ],
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "These three reports form the core \"standard portfolio of reports\" that FI is designed to produce. The Balance Sheet shows financial position at a point in time. The Income Statement shows financial performance over a period. The Statement of Cash Flows shows how cash moved in and out over a period. Together, they give a complete picture of a company's financial health and are required by law in most countries for external reporting."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "enum-2",
+                "type": "Enumeration",
+                "question": "Enumerate the FOUR (4) SAP modules listed as integration points with the SAP FI module.",
+                "slideRef": "📄 Reference: Slide 29 — \"SAP FI Module\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": [
+                      "Sales and Distribution (SD)",
+                      "Materials Management (MM)",
+                      "Production Planning and Execution (PP)",
+                      "Managerial Accounting (CO)"
+                ],
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The module specifically states that FI is \"fully integrated with other SAP modules including, but not limited to\" these four. The integration works as follows: SD sends billing data to FI-AR; MM sends purchasing/goods receipt data to FI-AP; PP sends production cost data to FI; and CO shares cost center and profit center data with FI. This integration eliminates duplicate data entry and ensures real-time financial visibility."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "enum-3",
+                "type": "Enumeration",
+                "question": "Enumerate FIVE (5) external target groups of Financial Accounting reports.",
+                "slideRef": "📄 Reference: Slide 7 — \"Target Groups\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": [
+                      "Legal Authorities",
+                      "Banks",
+                      "Auditors",
+                      "Shareholders",
+                      "Insurance"
+                ],
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "External parties are those OUTSIDE the organization who need financial information to make decisions about their relationship with the company. Banks need it for lending decisions. Auditors need it for compliance checks. Shareholders need it to evaluate their investment. Taxing Authorities need it to assess taxes. Financial Analysts need it to issue buy/sell recommendations. The module contrasts these with internal parties (executives, management, staff, employees) who use the same data for internal decision-making."
+                ],
+                "altAnswers": [
+                      "Taxing Authorities",
+                      "Media",
+                      "Financial Analysts"
+                ]
+          },
+          {
+                "id": "id-1",
+                "type": "Identification",
+                "question": "This is the highest-level organizational unit in SAP and is described as \"an independent environment in the system.\"",
+                "slideRef": "📄 Reference: Slide 8 — \"FI Organizational Structure\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "CLIENT",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "In SAP, the Client sits at the very top of the organizational hierarchy. Everything — all data, configurations, and company codes — exists within a Client. In the Global Bike example, \"Global Bike\" is the Client. Different clients in SAP are completely separate from one another (e.g., different production and test environments are often kept in separate clients)."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "id-2",
+                "type": "Identification",
+                "question": "This financial report presents an organization's Assets, Liabilities, and Equity at a specific point in time, and it must always be in balance.",
+                "slideRef": "📄 Reference: Slide 21 — \"FI Reporting (Balance Sheet)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "BALANCE SHEET",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The Balance Sheet follows the fundamental equation: Assets = Liabilities + Equity. It is a \"snapshot\" of the company's financial position at a specific date. It is distinct from the Income Statement (which covers a period) and the Statement of Cash Flows (which tracks cash movements over time)."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "id-3",
+                "type": "Identification",
+                "question": "This organizational entity grants and monitors credit limits for customers and can include one or more company codes.",
+                "slideRef": "📄 Reference: Slide 9 — \"FI Organizational Structure\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "CREDIT CONTROL AREA",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The Credit Control Area is a risk management tool in FI. It defines how much credit a customer can have. In Global Bike, a single global Credit Control Area (GL00) covers all company codes, meaning the credit risk for a customer is monitored at the global level — not separately for each country."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "id-4",
+                "type": "Identification",
+                "question": "This is the sub-ledger that tracks information about vendors from whom the enterprise purchases goods and services, and it integrates directly with MM.",
+                "slideRef": "📄 Reference: Slide 16 — \"FI Master Data (Accounts Payable Sub-Ledger FI-AP)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "ACCOUNTS PAYABLE SUB-LEDGER (FI-AP)",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "FI-AP records all payables owed to vendors. When the MM module processes a goods receipt or an incoming invoice, FI-AP is automatically updated. The individual vendor balances (Vendor 100435, Vendor 100234, etc.) are then summarized in the Accounts Payable General Ledger account."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "id-5",
+                "type": "Identification",
+                "question": "This SAP principle ensures that every business transaction impacting FI creates a uniquely numbered electronic record that cannot be deleted.",
+                "slideRef": "📄 Reference: Slide 27 — \"SAP Document Principle\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "SAP DOCUMENT PRINCIPLE",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The SAP Document Principle is the foundation of SAP's audit trail. Every posting creates a document with a unique number, date/time, responsible user, and content. The immutability (cannot be deleted) of this document ensures integrity, supports auditors, and meets legal requirements for financial record-keeping in most countries around the world."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "id-6",
+                "type": "Identification",
+                "question": "This report considers the associated changes — both inflows and outflows — that have occurred in cash over a given period of time.",
+                "slideRef": "📄 Reference: Slide 25 — \"FI Reporting (Statement of Cash Flows)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "STATEMENT OF CASH FLOWS",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The Statement of Cash Flows is described as tracking cash movements (inflows and outflows) over a period. The module describes cash as \"arguably the most important of all assets.\" While the Balance Sheet shows the ending cash balance and the Income Statement shows profitability, the Statement of Cash Flows shows",
+                      "WHY and HOW the cash balance changed."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "id-7",
+                "type": "Identification",
+                "question": "This is the data storage area created by the unique combination of a Company Code and a Chart of Accounts, and it is used to prepare financial statements.",
+                "slideRef": "📄 Reference: Slide 13 — \"FI Master Data (General Ledger G/L Accounts)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "GENERAL LEDGER (G/L)",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The General Ledger is the central repository for all financial data within a company code. It contains a listing of all transactions affecting each account and the corresponding account balance. Sub-ledgers (like AR and AP) feed into the General Ledger automatically, ensuring the GL always reflects the complete financial picture."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "id-8",
+                "type": "Identification",
+                "question": "This concept allows an auditor to begin with a financial statement account balance and trace it back through accounting records to the original supporting transactions.",
+                "slideRef": "📄 Reference: Slide 26 — \"Accountants and Audit Trails\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "AUDIT TRAIL",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "Audit trails are the trail of records that connect high-level financial statement figures to the individual transactions that produced them. In SAP, the Document Principle enables robust audit trails because every transaction creates a permanent, uniquely numbered record. Auditors rely on these trails to verify the accuracy and legitimacy of reported financial figures."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "id-9",
+                "type": "Identification",
+                "question": "This organizational unit in SAP FI represents a separate area of operations or responsibilities within an organization, and financial statements can be prepared for it for internal reporting.",
+                "slideRef": "📄 Reference: Slide 9 — \"FI Organizational Structure\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "BUSINESS AREA",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "Business Areas allow companies to produce internal financial statements for specific segments of their business without needing to set up separate company codes. In Global Bike, the Business Area is \"Bikes\" (BI00). This allows Global Bike to analyze the financial performance of its Bikes business across all company codes and countries."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "id-10",
+                "type": "Identification",
+                "question": "This financial statement formula is: Revenues minus Expenses equals this result.",
+                "slideRef": "📄 Reference: Slide 23 — \"FI Reporting (Income Statement)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "NET INCOME",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "The Income Statement formula from the module is: Revenues − Expenses = Net Income. In the example (Slide 24), Total Revenue (10,250) − Total Expenses (8,250) = Net Income Before Taxes (2,000); then deducting Taxes (750) gives a final Net Income of 1,250. Net Income is often called the \"bottom line\" because it appears at the bottom of the Income Statement."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "acr-1",
+                "type": "Acronym Meaning",
+                "question": "FI",
+                "slideRef": "📄 Reference: Slide 1 — Title / Throughout the module",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "Financial Accounting",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "FI stands for Financial Accounting in the SAP module naming convention. It is the core module responsible for recording all financial transactions of a company and producing legally required financial statements. In SAP, module names are typically abbreviated (e.g., MM = Materials Management, SD = Sales and Distribution, PP = Production Planning, CO = Controlling)."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "acr-2",
+                "type": "Acronym Meaning",
+                "question": "G/L",
+                "slideRef": "📄 Reference: Slide 13 — \"FI Master Data (General Ledger G/L Accounts)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "General Ledger",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "G/L stands for General Ledger — the central book of accounts in financial accounting. It summarizes all financial transactions of a company. In SAP, the G/L Account is the fundamental master data element in FI. Every financial posting, whether from SD, MM, PP, or direct entry, ultimately flows into the General Ledger to produce financial statements."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "acr-3",
+                "type": "Acronym Meaning",
+                "question": "FI-AR",
+                "slideRef": "📄 Reference: Slide 15 — \"FI Master Data (Accounts Receivable Sub-Ledger FI-AR)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "Financial Accounting – Accounts Receivable",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "FI-AR refers to the Accounts Receivable sub-module of Financial Accounting. \"Accounts Receivable\" means money that the company is yet to RECEIVE from its customers. FI-AR maintains individual customer account balances and integrates directly with the SD (Sales and Distribution) module. Billings from SD flow automatically into FI-AR as journal entries."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "acr-4",
+                "type": "Acronym Meaning",
+                "question": "FI-AP",
+                "slideRef": "📄 Reference: Slide 16 — \"FI Master Data (Accounts Payable Sub-Ledger FI-AP)\"",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "Financial Accounting – Accounts Payable",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "FI-AP refers to the Accounts Payable sub-module of Financial Accounting. \"Accounts Payable\" means money that the company still needs to PAY to its vendors/suppliers. FI-AP maintains individual vendor account balances and integrates directly with the MM (Materials Management) module. Purchase and goods receipt activities in MM automatically generate entries in FI-AP."
+                ],
+                "altAnswers": []
+          },
+          {
+                "id": "acr-5",
+                "type": "Acronym Meaning",
+                "question": "CO",
+                "slideRef": "📄 Reference: Slide 29 — \"SAP FI Module\" / Slide 11 — Enterprise Structure",
+                "difficulty": "",
+                "choices": [],
+                "correctAnswer": "Controlling (Managerial Accounting)",
+                "why": [],
+                "origChoices": [],
+                "origWhy": [
+                      "CO stands for Controlling, which is SAP's module for internal/managerial accounting. While FI focuses on external financial reporting (Balance Sheet, Income Statement), CO focuses on internal reporting — cost center management, profit center accounting, budgeting, and profitability analysis. CO is listed as one of the key integration points with FI, and in Global Bike's structure, it includes Controlling Areas (NA00, EU00, AS00) and an Operating Concern (GL00)."
+                ],
+                "altAnswers": []
+          }
     ];
 
     /* =====================================================
@@ -1344,6 +2296,57 @@
         .trim()
         .replace(/\s+/g, ' ')
         .replace(/[^\w\s]/g, '');
+    }
+
+    function getAnswerVariants(value) {
+      const text = String(value ?? '').trim();
+      const variants = new Set();
+      if (!text) return [];
+      variants.add(text);
+      const withoutParentheses = text.replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+      if (withoutParentheses) variants.add(withoutParentheses);
+      const parentheticalMatches = text.match(/\(([^)]*)\)/g) || [];
+      parentheticalMatches.forEach(match => {
+        const inner = match.replace(/[()]/g, '').trim();
+        if (inner) variants.add(inner);
+      });
+      return Array.from(variants);
+    }
+
+    function normalizeFlexibleText(value) {
+      return String(value ?? '')
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/\([^)]*\)/g, ' ')
+        .replace(/\b(the|a|an|of)\b/g, ' ')
+        .replace(/[^\w\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function answerMatches(expected, actual) {
+      if (!actual && actual !== 0) return false;
+      const expectedVariants = getAnswerVariants(expected);
+      const actualVariants = getAnswerVariants(actual);
+      for (const expectedVariant of expectedVariants) {
+        for (const actualVariant of actualVariants) {
+          const exactExpected = normalizeText(expectedVariant);
+          const exactActual = normalizeText(actualVariant);
+          if (exactExpected && exactExpected === exactActual) return true;
+
+          const looseExpected = normalizeFlexibleText(expectedVariant);
+          const looseActual = normalizeFlexibleText(actualVariant);
+          if (!looseExpected || !looseActual) continue;
+          if (looseExpected === looseActual) return true;
+
+          const actualTokens = looseActual.split(' ').filter(Boolean);
+          const expectedTokens = new Set(looseExpected.split(' ').filter(Boolean));
+          if (actualTokens.length >= 2 && actualTokens.every(token => expectedTokens.has(token))) {
+            return true;
+          }
+        }
+      }
+      return false;
     }
 
     function normalizeQuestionType(type) {
@@ -1570,10 +2573,10 @@
           console.warn(`[EXAM] Requested ${requested} "${type}" Qs but only ${pool.length} available.`);
         }
         const shuffled = cryptoShuffle(deepClone(pool)).slice(0, count);
-        // Shuffle MC choices only
+        // Keep MC choices in A-B-C-D sequence for readability.
         shuffled.forEach(q => {
           if (q.type === 'Multiple Choice') {
-            q.shuffledChoices = cryptoShuffle([...(q.origChoices || [])]);
+            q.shuffledChoices = [...(q.origChoices || [])];
           }
         });
         result.push(...shuffled);
@@ -1586,27 +2589,37 @@
     ===================================================== */
     function isCorrect(q, userAnswer) {
       if (!userAnswer && userAnswer !== 0) return false;
-      const norm = normalizeText(userAnswer);
-      if (normalizeText(q.correctAnswer) === norm) return true;
+      if (answerMatches(q.correctAnswer, userAnswer)) return true;
       const alts = Array.isArray(q.altAnswers) ? q.altAnswers : [];
-      return alts.some(a => normalizeText(a) === norm);
+      return alts.some(a => answerMatches(a, userAnswer));
     }
 
     function getEnumerationMatches(q, userAnswers) {
       const items = Array.isArray(q.correctAnswer) ? q.correctAnswer : [q.correctAnswer];
       const alts  = Array.isArray(q.altAnswers)   ? q.altAnswers   : [];
-      const remaining = items.map((item, index) => ({ index, norm: normalizeText(item) }));
+      const remaining = items.map((item, index) => ({ index, value: item }));
       const matches = (userAnswers || []).map(() => false);
 
       (userAnswers || []).forEach((raw, answerIndex) => {
-        const norm = normalizeText(raw);
-        if (!norm) return;
-        let matchIndex = remaining.findIndex(item => item && item.norm === norm);
-        if (matchIndex === -1 && alts.some(a => normalizeText(a) === norm)) {
-          matchIndex = remaining.findIndex(Boolean);
-        }
+        if (!hasText(raw)) return;
+        const matchIndex = remaining.findIndex(item => item && answerMatches(item.value, raw));
         if (matchIndex !== -1) {
           remaining[matchIndex] = null;
+          matches[answerIndex] = true;
+        }
+      });
+
+      const usedAltKeys = new Set();
+      (userAnswers || []).forEach((raw, answerIndex) => {
+        if (matches[answerIndex] || !hasText(raw)) return;
+        const matchedAlt = alts.find(alt => answerMatches(alt, raw));
+        if (!matchedAlt) return;
+        const usedAltKey = normalizeFlexibleText(matchedAlt);
+        if (usedAltKeys.has(usedAltKey)) return;
+        const matchIndex = remaining.findIndex(Boolean);
+        if (matchIndex !== -1) {
+          remaining[matchIndex] = null;
+          usedAltKeys.add(usedAltKey);
           matches[answerIndex] = true;
         }
       });
@@ -1883,6 +2896,19 @@
       const cards = document.querySelectorAll(`[data-type="${type}"]`);
       const firstVisible = Array.from(cards).find(c => c.style.display !== 'none');
       if (firstVisible) firstVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function formatSlideRef(ref) {
+      return String(ref || '')
+        .replace(/^📄\s*/, '')
+        .replace(/^Reference:\s*/i, '')
+        .trim();
+    }
+
+    function splitChoice(choice) {
+      const match = String(choice).match(/^\s*([A-D])\.\s*(.+)$/i);
+      if (!match) return { letter: '', text: String(choice) };
+      return { letter: match[1].toUpperCase(), text: match[2] };
     }
 
     /* =====================================================
@@ -2163,6 +3189,12 @@
           const label = document.createElement('span');
           label.className = 'card-label';
           label.textContent = `Question ${num} · ${TYPE_LABELS[type] || type}`;
+          if (q.slideRef) {
+            const slide = document.createElement('span');
+            slide.className = 'slide-ref';
+            slide.textContent = formatSlideRef(q.slideRef);
+            label.appendChild(slide);
+          }
           const headerRight = document.createElement('div');
           headerRight.className = 'card-header-right';
           const badge = document.createElement('span');
@@ -2256,6 +3288,7 @@
         fieldset.appendChild(legend);
         const choices = q.shuffledChoices || q.origChoices || [];
         choices.forEach((choice, i) => {
+          const parsedChoice = splitChoice(choice);
           const lbl = document.createElement('label');
           lbl.className = 'choice-label';
           lbl.setAttribute('data-index', i);
@@ -2267,7 +3300,19 @@
           radio.addEventListener('change', () => handleAnswer(q.id, choice));
           const span = document.createElement('span');
           span.className = 'choice-text';
-          span.textContent = choice;
+          const mark = document.createElement('span');
+          mark.className = 'choice-mark';
+          if (parsedChoice.letter) {
+            const letter = document.createElement('span');
+            letter.className = 'choice-letter';
+            letter.textContent = parsedChoice.letter;
+            span.appendChild(mark);
+            span.appendChild(letter);
+          }
+          const body = document.createElement('span');
+          body.className = 'choice-body';
+          body.textContent = parsedChoice.text;
+          span.appendChild(body);
           lbl.appendChild(radio);
           lbl.appendChild(span);
           fieldset.appendChild(lbl);
@@ -2517,17 +3562,21 @@
               const radio = lbl.querySelector('input[type="radio"]');
               if (!radio) return;
               const choiceVal = radio.value;
-              const isCorrectChoice = normalizeText(choiceVal) === normalizeText(q.correctAnswer) ||
-                (Array.isArray(q.altAnswers) ? q.altAnswers : []).some(a => normalizeText(a) === normalizeText(choiceVal));
-              const isUserChoice = normalizeText(choiceVal) === normalizeText(ans || '');
+              const isCorrectChoice = answerMatches(q.correctAnswer, choiceVal) ||
+                (Array.isArray(q.altAnswers) ? q.altAnswers : []).some(a => answerMatches(a, choiceVal));
+              const isUserChoice = answerMatches(choiceVal, ans || '');
               if (isCorrectChoice) {
                 lbl.classList.add('correct');
+                const mark = lbl.querySelector('.choice-mark');
                 const span = lbl.querySelector('.choice-text');
-                if (span && !span.dataset.marked) { span.dataset.marked = '1'; span.textContent = '✅ ' + choiceVal; }
+                if (mark) mark.textContent = '✅';
+                else if (span && !span.dataset.marked) { span.dataset.marked = '1'; span.textContent = '✅ ' + choiceVal; }
               } else if (isUserChoice && !correct) {
                 lbl.classList.add('incorrect');
+                const mark = lbl.querySelector('.choice-mark');
                 const span = lbl.querySelector('.choice-text');
-                if (span && !span.dataset.marked) { span.dataset.marked = '1'; span.textContent = '❌ ' + choiceVal; }
+                if (mark) mark.textContent = '❌';
+                else if (span && !span.dataset.marked) { span.dataset.marked = '1'; span.textContent = '❌ ' + choiceVal; }
               }
             });
             let html = '';
@@ -2581,10 +3630,27 @@
         .replace(/'/g, '&#39;');
     }
 
+    function formatExplanationItem(text) {
+      const raw = String(text ?? '');
+      const match = raw.match(/^Why\s+([A-Z])\s+is\s+(correct|wrong):\s*(.*)$/i);
+      if (!match) {
+        return { className: '', html: escapeHTML(raw) };
+      }
+      const letter = match[1].toUpperCase();
+      const verdict = match[2].toLowerCase();
+      const rest = match[3];
+      const className = verdict === 'correct' ? 'explanation-correct' : 'explanation-wrong';
+      const prefix = `<span class="explanation-prefix">Why <span class="explanation-letter">${letter}</span> is ${verdict}:</span>`;
+      return { className, html: `${prefix} ${escapeHTML(rest)}` };
+    }
+
     function buildExplanationHTML(q) {
       const why = q.origWhy;
       if (!why || !Array.isArray(why) || why.length === 0) return '';
-      return `<div class="explanation-block"><strong>Explanation:</strong><ul>${why.map(w => `<li>${escapeHTML(w)}</li>`).join('')}</ul></div>`;
+      return `<div class="explanation-block"><strong>Explanation:</strong><ul>${why.map(w => {
+        const item = formatExplanationItem(w);
+        return `<li${item.className ? ` class="${item.className}"` : ''}>${item.html}</li>`;
+      }).join('')}</ul></div>`;
     }
 
     function buildAltAnswersHTML(q) {
