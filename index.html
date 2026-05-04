@@ -168,20 +168,72 @@
       gap: 8px;
       flex-shrink: 0;
     }
+    .timer-cluster {
+      display: grid;
+      gap: 4px;
+      min-width: 116px;
+      padding: 3px 0;
+    }
     #timer-display {
       font-family: var(--font-heading);
       font-size: 1.1rem;
       font-weight: 700;
-      min-width: 64px;
-      text-align: center;
-      padding: 4px 8px;
+      min-width: 72px;
+      text-align: right;
+      padding: 0 2px;
       border-radius: var(--radius-btn);
       transition: color 0.2s;
+    }
+    #timer-drain-track {
+      width: 100%;
+      height: 5px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(148,163,184,0.24);
+      box-shadow: inset 0 0 0 1px rgba(148,163,184,0.12);
+    }
+    #timer-drain-fill {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--color-accent), #facc15);
+      box-shadow: 0 0 14px rgba(245,166,35,0.36);
+      transition: width 1s linear, background 0.2s;
+    }
+    #timer-drain-fill.timer-drain-warning {
+      background: linear-gradient(90deg, var(--color-warning), var(--color-accent));
+    }
+    #timer-drain-fill.timer-drain-danger {
+      background: linear-gradient(90deg, var(--color-danger), var(--color-accent));
     }
     .timer-normal  { color: var(--color-primary); }
     .timer-warning { color: var(--color-warning); }
     .timer-danger  { color: var(--color-danger); animation: pulse 0.8s ease-in-out infinite alternate; }
     @keyframes pulse { from { opacity: 1; } to { opacity: 0.5; } }
+
+    .top-github-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 34px;
+      padding: 6px 10px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-btn);
+      color: var(--color-text-secondary);
+      font-size: 0.82rem;
+      font-weight: 700;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .top-github-link:hover {
+      background: var(--color-choice-bg);
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+    .top-github-link:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 
     #theme-toggle-btn {
       background: transparent;
@@ -194,6 +246,14 @@
     }
     #theme-toggle-btn:hover { background: var(--color-border); }
     #theme-toggle-btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+    @media (max-width: 767px) {
+      .top-bar-inner { padding: 0 12px; gap: 8px; }
+      .top-bar-meta { display: none; }
+      .timer-cluster { min-width: 88px; }
+      #timer-display { min-width: 62px; font-size: 1rem; }
+      .top-github-link .github-text { display: none; }
+      .top-github-link { width: 34px; padding: 6px; }
+    }
 
     /* =====================================================
        PROGRESS BAR
@@ -564,6 +624,7 @@
       color: var(--color-text-primary);
       margin-bottom: 18px;
       line-height: 1.65;
+      overflow-wrap: break-word;
     }
 
     /* =====================================================
@@ -575,6 +636,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      min-width: 0;
     }
     .choice-label {
       display: flex;
@@ -607,6 +669,7 @@
       align-items: flex-start;
       gap: 8px;
       min-width: 0;
+      max-width: 100%;
       flex: 1;
     }
     .choice-mark {
@@ -627,7 +690,12 @@
       font-weight: 700;
       line-height: 1;
     }
-    .choice-body { min-width: 0; }
+    .choice-body {
+      min-width: 0;
+      max-width: 100%;
+      overflow-wrap: break-word;
+      font-variant-numeric: tabular-nums;
+    }
     .question-card[data-type="True or False"] .choice-group {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -886,9 +954,39 @@
     }
 
     .nav-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .nav-section-group {
+      display: grid;
+      gap: 7px;
+    }
+    .nav-section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--color-text-secondary);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .nav-section-count {
+      color: var(--color-primary);
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .nav-section-cells {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 6px;
+    }
+    #drawer .nav-section-cells {
+      grid-template-columns: repeat(5, 1fr);
     }
     .nav-cell {
       aspect-ratio: 1;
@@ -997,9 +1095,92 @@
       #drawer-toggle { display: flex; align-items: center; justify-content: center; }
     }
     @media (max-width: 767px) {
+      #filter-toolbar {
+        padding: 8px 10px;
+        gap: 6px;
+        align-items: center;
+      }
+      .filter-label { display: none; }
+      .filter-btn,
+      .review-summary-btn,
+      #jump-submit-btn {
+        min-height: 30px;
+        padding: 5px 9px;
+        font-size: 0.74rem;
+      }
+      .toolbar-spacer { display: none; }
+      .status-pill {
+        padding: 4px 7px;
+        font-size: 0.72rem;
+      }
+      #flagged-count { display: none; }
+      .section-jump-row {
+        flex: 1 0 100%;
+        padding-top: 6px;
+        gap: 6px;
+        overflow-x: auto;
+      }
+      .section-jump-label { display: none; }
+      .section-jump-chip {
+        min-height: 26px;
+        padding: 4px 8px;
+        font-size: 0.7rem;
+      }
       #mobile-badge { display: block; }
       #main-layout { padding: 12px; }
-      .question-card { padding: 16px; }
+      .question-card { padding: 14px; }
+      .card-header {
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .card-label { gap: 6px; }
+      .question-number-badge {
+        min-height: 26px;
+        padding: 4px 9px;
+        font-size: 0.78rem;
+      }
+      .question-type-badge,
+      .slide-ref {
+        font-size: 0.68rem;
+      }
+      .flag-btn {
+        min-width: 36px;
+        min-height: 36px;
+      }
+      .question-text {
+        font-size: 0.95rem;
+        line-height: 1.55;
+        margin-bottom: 14px;
+        overflow-wrap: anywhere;
+      }
+      .choice-group { gap: 7px; }
+      .choice-label {
+        align-items: flex-start;
+        gap: 8px;
+        min-height: 44px;
+        padding: 9px 10px;
+        font-size: 0.88rem;
+        line-height: 1.45;
+      }
+      .choice-label input[type="radio"] {
+        margin-top: 4px;
+        width: 15px;
+        height: 15px;
+      }
+      .choice-text {
+        gap: 7px;
+        align-items: flex-start;
+      }
+      .choice-letter {
+        flex-basis: 24px;
+        min-width: 24px;
+        height: 24px;
+      }
+      .choice-body {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        line-height: 1.45;
+      }
       .question-card[data-type="True or False"] .choice-group,
       .enum-group { grid-template-columns: 1fr; }
     }
@@ -1158,11 +1339,38 @@
     }
     .summary-breakdown h3 { font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
     .breakdown-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
+      display: grid;
+      grid-template-columns: minmax(150px, 1fr) minmax(160px, 2fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
       border-bottom: 1px solid var(--color-border);
       font-size: 0.9rem;
+    }
+    .breakdown-type {
+      min-width: 0;
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+    .breakdown-meter {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.18);
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(148,163,184,0.12);
+    }
+    .breakdown-meter-fill {
+      display: block;
+      height: 100%;
+      width: var(--breakdown-width);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--color-primary), var(--breakdown-color, var(--color-success)));
+      transition: width 0.35s ease;
+    }
+    .breakdown-score {
+      color: var(--color-text-primary);
+      font-weight: 800;
+      white-space: nowrap;
     }
     .breakdown-row:last-child { border-bottom: none; }
     .summary-actions {
@@ -1204,6 +1412,14 @@
       .summary-stats { grid-template-columns: 1fr; }
       .summary-hero { grid-template-columns: 1fr; }
       .score-ring { width: 132px; }
+      .breakdown-row {
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+      }
+      .breakdown-meter {
+        grid-column: 1 / -1;
+        order: 3;
+      }
       .summary-actions { justify-content: flex-start; }
     }
 
@@ -1475,7 +1691,15 @@
       <span class="top-bar-logo" id="top-bar-logo">📋 Exam</span>
       <span class="top-bar-meta" id="top-bar-meta"></span>
       <div class="top-bar-right">
-        <span id="timer-display" class="timer-normal" aria-live="polite" aria-label="Time remaining">--:--</span>
+        <div class="timer-cluster" aria-label="Time remaining">
+          <span id="timer-display" class="timer-normal" aria-live="polite">--:--</span>
+          <div id="timer-drain-track" aria-hidden="true">
+            <span id="timer-drain-fill"></span>
+          </div>
+        </div>
+        <a id="top-github-link" class="top-github-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub profile">
+          <span class="github-text">GitHub</span><span aria-hidden="true">↗</span>
+        </a>
         <button id="theme-toggle-btn" aria-label="Switch to light mode">☀️ Light</button>
       </div>
     </div>
@@ -3128,6 +3352,16 @@
         pill.textContent = `${ABBRS[type] || type} ${value}/${total}`;
         pill.title = examState.submitted ? `${type}: ${value}/${total} correct` : `${type}: ${value}/${total} answered`;
       });
+      document.querySelectorAll('.nav-section-group').forEach(group => {
+        const type = group.dataset.navType;
+        const qs = examState.questions.filter(q => q.type === type);
+        const total = qs.length;
+        const value = examState.submitted
+          ? qs.filter(isQuestionFullyCorrect).length
+          : qs.filter(isQuestionAnswered).length;
+        const count = group.querySelector('.nav-section-count');
+        if (count) count.textContent = examState.submitted ? `${value}/${total} correct` : `${value}/${total} answered`;
+      });
     }
 
     function updateProgress() {
@@ -3218,13 +3452,27 @@
       const mm = String(Math.floor(r / 60)).padStart(2, '0');
       const ss = String(r % 60).padStart(2, '0');
       const el = document.getElementById('timer-display');
+      const drain = document.getElementById('timer-drain-fill');
       el.textContent = `${mm}:${ss}`;
       const half    = EXAM_CONFIG.timerSeconds * 0.5;
       const quarter = EXAM_CONFIG.timerSeconds * 0.25;
       el.classList.remove('timer-normal', 'timer-warning', 'timer-danger');
-      if (r > half)         el.classList.add('timer-normal');
-      else if (r > quarter) el.classList.add('timer-warning');
-      else                  el.classList.add('timer-danger');
+      if (drain) {
+        const pct = EXAM_CONFIG.timerSeconds > 0
+          ? Math.max(0, Math.min(100, (r / EXAM_CONFIG.timerSeconds) * 100))
+          : 0;
+        drain.style.width = `${pct}%`;
+        drain.classList.remove('timer-drain-warning', 'timer-drain-danger');
+      }
+      if (r > half) {
+        el.classList.add('timer-normal');
+      } else if (r > quarter) {
+        el.classList.add('timer-warning');
+        if (drain) drain.classList.add('timer-drain-warning');
+      } else {
+        el.classList.add('timer-danger');
+        if (drain) drain.classList.add('timer-drain-danger');
+      }
     }
 
     function checkToastCheckpoints() {
@@ -3453,6 +3701,11 @@
       // Top bar
       document.getElementById('top-bar-logo').textContent = `📋 ${EXAM_CONFIG.subjectCode}`;
       document.getElementById('top-bar-meta').textContent = `${EXAM_CONFIG.subjectName} — ${EXAM_CONFIG.topic}`;
+      const topGhLink = document.getElementById('top-github-link');
+      if (topGhLink) {
+        topGhLink.href = EXAM_CONFIG.githubUrl;
+        topGhLink.title = EXAM_CONFIG.githubUrl;
+      }
       // Footer
       document.getElementById('footer-author').textContent  = EXAM_CONFIG.authorName;
       document.getElementById('footer-program').textContent = EXAM_CONFIG.program;
@@ -3851,6 +4104,10 @@
       examState.submitted = true;
       const timeSpentSec = EXAM_CONFIG.timerSeconds - (examState.remainingTime || 0);
       examState._timeSpent = timeSpentSec;
+      const timerEl = document.getElementById('timer-display');
+      const timerDrain = document.getElementById('timer-drain-fill');
+      if (timerEl) timerEl.textContent = 'Submitted';
+      if (timerDrain) timerDrain.style.width = '0%';
 
       // Lock all inputs
       document.querySelectorAll('.question-card .answer-area input, .question-card .answer-area textarea').forEach(el => {
@@ -4129,7 +4386,15 @@
       TYPE_ORDER.forEach(type => {
         if (!breakdown[type]) return;
         const { earned: e, total: t } = breakdown[type];
-        breakdownHTML += `<div class="breakdown-row"><span>${type}</span><span><strong>${e} / ${t}</strong></span></div>`;
+        const typePct = t > 0 ? (e / t) * 100 : 0;
+        const typeColor = typePct >= 75 ? 'var(--color-success)' : typePct >= 50 ? 'var(--color-warning)' : 'var(--color-danger)';
+        breakdownHTML += `<div class="breakdown-row">
+          <span class="breakdown-type">${type}</span>
+          <span class="breakdown-meter" aria-hidden="true">
+            <span class="breakdown-meter-fill" style="--breakdown-width:${typePct}%; --breakdown-color:${typeColor};"></span>
+          </span>
+          <span class="breakdown-score">${e} / ${t}</span>
+        </div>`;
       });
 
       const panel = document.createElement('div');
@@ -4233,19 +4498,41 @@
           pills.appendChild(pill);
         });
 
-        // Build cells
-        examState.questions.forEach((q, idx) => {
-          const cell = document.createElement('button');
-          cell.className = 'nav-cell';
-          cell.setAttribute('data-question-id', q.id);
-          cell.setAttribute('aria-label', `Question ${idx + 1}, unanswered`);
-          cell.textContent = idx + 1;
-          cell.addEventListener('click', () => {
-            document.getElementById(`card-${q.id}`)
-              && smoothScrollToCard(document.getElementById(`card-${q.id}`));
-            if (window.innerWidth < 1024) closeDrawer();
+        // Build grouped cells
+        TYPE_ORDER.forEach(type => {
+          const typedQuestions = examState.questions
+            .map((q, idx) => ({ q, idx }))
+            .filter(item => item.q.type === type);
+          if (typedQuestions.length === 0) return;
+
+          const group = document.createElement('div');
+          group.className = 'nav-section-group';
+          group.setAttribute('data-nav-type', type);
+
+          const title = document.createElement('div');
+          title.className = 'nav-section-title';
+          title.innerHTML = `<span>${ABBRS[type] || type}</span><span class="nav-section-count">${typedQuestions.length} item${typedQuestions.length > 1 ? 's' : ''}</span>`;
+
+          const cells = document.createElement('div');
+          cells.className = 'nav-section-cells';
+
+          typedQuestions.forEach(({ q, idx }) => {
+            const cell = document.createElement('button');
+            cell.className = 'nav-cell';
+            cell.setAttribute('data-question-id', q.id);
+            cell.setAttribute('aria-label', `Question ${idx + 1}, unanswered`);
+            cell.textContent = idx + 1;
+            cell.addEventListener('click', () => {
+              const card = document.getElementById(`card-${q.id}`);
+              if (card) smoothScrollToCard(card);
+              if (window.innerWidth < 1024) closeDrawer();
+            });
+            cells.appendChild(cell);
           });
-          grid.appendChild(cell);
+
+          group.appendChild(title);
+          group.appendChild(cells);
+          grid.appendChild(group);
         });
       });
 
@@ -4463,6 +4750,8 @@
         .forEach(btn => { if (btn) btn.style.display = ''; });
       document.getElementById('floating-back-top').style.display = 'none';
       document.getElementById('timer-display').textContent = '--:--';
+      const timerDrain = document.getElementById('timer-drain-fill');
+      if (timerDrain) timerDrain.style.width = '100%';
       applyFilter('all');
 
       initExam();
@@ -4594,6 +4883,8 @@
         buildNavigator();
         clearInterval(timerInterval);
         document.getElementById('timer-display').textContent = 'Submitted';
+        const timerDrain = document.getElementById('timer-drain-fill');
+        if (timerDrain) timerDrain.style.width = '0%';
         setPostSubmitControlsVisible(true);
         document.getElementById('jump-submit-btn').style.display = 'none';
         [document.getElementById('jump-unanswered-btn'), document.getElementById('jump-unanswered-btn-drawer')]
