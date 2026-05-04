@@ -307,12 +307,62 @@
       transition: all 0.2s;
     }
     .filter-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+    .filter-btn[data-filter="flagged"],
+    .filter-btn[data-filter="unanswered"] {
+      background: rgba(245,166,35,0.1);
+      border-color: rgba(245,166,35,0.38);
+      color: var(--color-accent);
+      font-weight: 800;
+    }
+    .filter-btn[data-filter="flagged"]:hover,
+    .filter-btn[data-filter="unanswered"]:hover {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: #0f172a;
+      transform: translateY(-1px);
+    }
+    .filter-btn[data-filter="flagged"][aria-pressed="true"],
+    .filter-btn[data-filter="unanswered"][aria-pressed="true"] {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: #0f172a;
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+    .filter-btn.post-submit-only,
+    .review-summary-btn,
+    .review-retake-btn {
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.38);
+      color: var(--color-accent);
+      font-weight: 800;
+    }
+    .filter-btn.post-submit-only:hover,
+    .review-summary-btn:hover,
+    .review-retake-btn:hover {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: #0f172a;
+      transform: translateY(-1px);
+    }
+    .filter-btn.post-submit-only[aria-pressed="true"] {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
     .filter-btn[aria-pressed="true"] {
       background: var(--color-primary);
       border-color: var(--color-primary);
       color: #fff;
       outline: 2px solid var(--color-primary);
       outline-offset: 2px;
+    }
+    .filter-btn[data-filter="flagged"][aria-pressed="true"],
+    .filter-btn[data-filter="unanswered"][aria-pressed="true"] {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: #0f172a;
+      outline-color: var(--color-accent);
     }
     .filter-btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
     .post-submit-only { display: none; }
@@ -327,17 +377,24 @@
       white-space: nowrap;
     }
     .review-summary-btn {
-      background: transparent;
-      border: 1px solid var(--color-border);
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.38);
       border-radius: var(--radius-btn);
       padding: 6px 12px;
       font-size: 0.82rem;
-      color: var(--color-text-secondary);
-      font-weight: 600;
+      color: var(--color-accent);
+      font-weight: 800;
       transition: all 0.2s;
     }
-    .review-summary-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+    .review-retake-btn {
+      border-radius: var(--radius-btn);
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+    }
+    .review-summary-btn:hover { border-color: var(--color-accent); color: #0f172a; }
     .review-summary-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+    .review-retake-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
     .section-jump-row {
       flex: 1 0 100%;
       display: flex;
@@ -928,19 +985,25 @@
 
     #reset-flags-btn {
       width: 100%;
-      background: transparent;
-      border: 1px solid var(--color-border);
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.38);
       border-radius: var(--radius-btn);
-      padding: 8px 12px;
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--color-text-secondary);
+      padding: 9px 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--color-accent);
       margin-bottom: 10px;
-      text-align: left;
-      transition: all 0.2s;
+      text-align: center;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
     }
-    #reset-flags-btn:hover { border-color: var(--color-danger); color: var(--color-danger); }
-    #reset-flags-btn:focus-visible { outline: 2px solid var(--color-danger); outline-offset: 2px; }
+    #reset-flags-btn:hover {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: #0f172a;
+      transform: translateY(-1px);
+    }
+    #reset-flags-btn:active { transform: translateY(0); }
+    #reset-flags-btn:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 
     #nav-answered-count {
       font-size: 0.78rem;
@@ -967,15 +1030,15 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      color: var(--color-text-secondary);
-      font-size: 0.72rem;
+      color: var(--color-accent);
+      font-size: 0.76rem;
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
     .nav-section-count {
       color: var(--color-primary);
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 800;
       text-transform: none;
       letter-spacing: 0;
@@ -1727,6 +1790,7 @@
     <button class="filter-btn post-submit-only" data-filter="incorrect" aria-pressed="false">❌ Incorrect</button>
     <button class="filter-btn post-submit-only" data-filter="skipped" aria-pressed="false">Skipped</button>
     <button class="review-summary-btn post-submit-only" id="review-summary-btn">Back to Summary</button>
+    <button class="review-retake-btn post-submit-only" id="review-retake-btn">↺ Retake Exam</button>
     <span class="toolbar-spacer"></span>
     <span id="answered-count" class="status-pill" aria-live="polite">Answered: 0 / 0</span>
     <span id="flagged-count" class="status-pill" aria-live="polite">Flagged: 0</span>
@@ -3531,9 +3595,13 @@
     }
 
     function jumpToSection(type) {
+      if (activeFilter !== 'all') {
+        applyFilter('all', { scrollToFirst: false });
+      }
       const cards = document.querySelectorAll(`[data-type="${type}"]`);
-      const firstVisible = Array.from(cards).find(c => c.style.display !== 'none');
-      if (firstVisible) smoothScrollToCard(firstVisible);
+      const firstCard = Array.from(cards)[0];
+      if (firstCard) smoothScrollToCard(firstCard);
+      if (window.innerWidth < 1024) closeDrawer();
     }
 
     function smoothScrollToCard(card) {
@@ -4511,7 +4579,7 @@
 
           const title = document.createElement('div');
           title.className = 'nav-section-title';
-          title.innerHTML = `<span>${ABBRS[type] || type}</span><span class="nav-section-count">${typedQuestions.length} item${typedQuestions.length > 1 ? 's' : ''}</span>`;
+          title.innerHTML = `<span>${type}</span><span class="nav-section-count">${typedQuestions.length} item${typedQuestions.length > 1 ? 's' : ''}</span>`;
 
           const cells = document.createElement('div');
           cells.className = 'nav-section-cells';
@@ -4626,7 +4694,7 @@
     /* =====================================================
        FILTER SYSTEM
     ===================================================== */
-    function applyFilter(filter) {
+    function applyFilter(filter, options = {}) {
       activeFilter = filter;
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.setAttribute('aria-pressed', btn.dataset.filter === filter ? 'true' : 'false');
@@ -4649,6 +4717,10 @@
         }
       });
       updateSectionVisibility();
+      if (options.scrollToFirst) {
+        const firstVisible = getVisibleQuestionCards()[0];
+        if (firstVisible) smoothScrollToCard(firstVisible);
+      }
     }
 
     function getVisibleQuestionCards() {
@@ -4782,7 +4854,7 @@
 
       // Filter buttons
       document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+        btn.addEventListener('click', () => applyFilter(btn.dataset.filter, { scrollToFirst: true }));
       });
 
       document.addEventListener('keydown', handleKeyboardShortcuts);
@@ -4794,6 +4866,15 @@
 
       document.getElementById('review-summary-btn').addEventListener('click', () => {
         document.getElementById('summary-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      document.getElementById('review-retake-btn').addEventListener('click', () => {
+        openConfirmModal({
+          title: 'Start New Attempt?',
+          body: 'Your current results will be cleared and a new exam will begin.',
+          confirmLabel: 'Retake Exam',
+          onConfirm: retakeExam
+        });
       });
 
       // Floating back to top
