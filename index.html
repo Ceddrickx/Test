@@ -1,1249 +1,706 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BUSPROS Exam Hub | NU Fairview</title>
-  <link rel="icon" type="image/png" href="assets/cedd-logo-mark.png">
-  <link rel="apple-touch-icon" href="assets/cedd-logo-mark.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #050914;
-      --sidebar: #07101f;
-      --surface: #0b1424;
-      --surface-2: #101b31;
-      --surface-3: #14213b;
-      --line: rgba(148, 163, 184, 0.20);
-      --line-strong: rgba(96, 130, 255, 0.34);
-      --text: #f4f7ff;
-      --muted: #a8b3c7;
-      --soft: #7f8da8;
-      --blue: #4f7fff;
-      --violet: #8b5cf6;
-      --cyan: #22d3ee;
-      --teal: #14b8a6;
-      --orange: #f59e0b;
-      --pink: #ec4899;
-      --theme-wipe-color: #f4f7fb;
-      --theme-x: calc(100% - 72px);
-      --theme-y: 38px;
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
-      --radius: 8px;
-      --font-head: "Sora", system-ui, sans-serif;
-      --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
-    }
-
-    body.light {
-      color-scheme: light;
-      --bg: #edf3fb;
-      --sidebar: #f8fbff;
-      --surface: #ffffff;
-      --surface-2: #eaf1fb;
-      --surface-3: #dfeaf8;
-      --line: #cbd8e8;
-      --line-strong: #9db6ff;
-      --text: #172033;
-      --muted: #5f6f86;
-      --soft: #7b8aa1;
-      --theme-wipe-color: #050914;
-      --shadow: 0 20px 56px rgba(30, 41, 59, 0.12);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      margin: 0;
-      background:
-        radial-gradient(circle at 78% 0%, rgba(79, 127, 255, 0.18), transparent 34%),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.06), transparent 25%, transparent 75%, rgba(236, 72, 153, 0.05)),
-        repeating-linear-gradient(0deg, rgba(148, 163, 184, 0.045) 0 1px, transparent 1px 36px),
-        repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.035) 0 1px, transparent 1px 36px),
-        var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      letter-spacing: 0;
-      transition: background-color 0.28s ease, color 0.28s ease;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      left: var(--theme-x);
-      top: var(--theme-y);
-      z-index: 999;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      pointer-events: none;
-      background: var(--theme-wipe-color);
-      transform: translate(-50%, -50%) scale(0);
-      opacity: 0;
-    }
-
-    body.theme-switching::before {
-      animation: theme-wipe 0.58s cubic-bezier(.2,.8,.2,1);
-    }
-
-    a { color: inherit; text-decoration: none; }
-    button, input, select { font: inherit; }
-    button { cursor: pointer; }
-    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
-      outline: 3px solid rgba(79, 127, 255, 0.42);
-      outline-offset: 3px;
-    }
-
-    .icon {
-      width: 19px;
-      height: 19px;
-      flex: 0 0 auto;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .app {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 292px minmax(0, 1fr);
-    }
-
-    .sidebar {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 22px;
-      padding: 24px 18px;
-      border-right: 1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(79, 127, 255, 0.08), transparent 44%),
-        color-mix(in srgb, var(--sidebar) 94%, transparent);
-      backdrop-filter: blur(18px);
-      transition: background-color 0.28s ease, border-color 0.28s ease;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.10);
-    }
-
-    .brand img {
-      width: 44px;
-      height: 44px;
-      object-fit: contain;
-    }
-
-    .brand strong {
-      display: block;
-      font: 800 1rem/1.2 var(--font-head);
-    }
-
-    .brand span {
-      display: block;
-      margin-top: 3px;
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-
-    .nav {
-      display: grid;
-      align-content: start;
-      gap: 8px;
-    }
-
-    .nav a,
-    .nav button {
-      width: 100%;
-      min-height: 52px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 0 16px;
-      border: 1px solid transparent;
-      border-radius: var(--radius);
-      background: transparent;
-      color: var(--muted);
-      text-align: left;
-      font-weight: 700;
-    }
-
-    .nav a.active,
-    .nav a:hover,
-    .nav button:hover {
-      color: #fff;
-      border-color: rgba(96, 130, 255, 0.28);
-      background: linear-gradient(135deg, rgba(49, 84, 255, 0.90), rgba(41, 58, 156, 0.76));
-      box-shadow: 0 14px 28px rgba(41, 84, 255, 0.20);
-    }
-
-    .developer-card {
-      padding: 20px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      background: linear-gradient(160deg, rgba(49, 84, 255, 0.16), rgba(20, 184, 166, 0.06)), var(--surface);
-      text-align: center;
-    }
-
-    .profile-photo {
-      width: 76px;
-      height: 76px;
-      margin: 0 auto 14px;
-      display: block;
-      border: 2px solid rgba(159, 180, 255, 0.62);
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center;
-      background: #0b1020;
-      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
-    }
-
-    .developer-card p {
-      margin: 0 0 8px;
-      color: var(--muted);
-      font-size: 0.84rem;
-    }
-
-    .developer-card strong {
-      display: block;
-      margin-bottom: 8px;
-      font: 800 1.05rem/1.2 var(--font-head);
-    }
-
-    .developer-card span {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      color: #9fb4ff;
-      font-size: 0.85rem;
-      font-weight: 700;
-    }
-
-    .copyright {
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(148, 163, 184, 0.10);
-      color: var(--soft);
-      font-size: 0.82rem;
-      line-height: 1.55;
-    }
-
-    .main {
-      min-width: 0;
-      padding: 16px 24px 28px;
-    }
-
-    .surface-animated,
-    .pill-btn,
-    .icon-btn,
-    .hero,
-    .week-card,
-    .modal,
-    .search input,
-    .sort-select,
-    .filter-btn {
-      transition:
-        background-color 0.28s ease,
-        border-color 0.28s ease,
-        color 0.28s ease,
-        box-shadow 0.28s ease,
-        transform 0.18s ease;
-    }
-
-    .mobile-topbar {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 14px 0;
-    }
-
-    .mobile-topbar .brand {
-      min-width: 0;
-      flex: 1 1 auto;
-    }
-
-    .main-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-
-    .pill-btn,
-    .icon-btn {
-      min-height: 42px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: color-mix(in srgb, var(--surface) 86%, transparent);
-      color: var(--text);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      padding: 0 14px;
-      font-weight: 800;
-    }
-
-    .icon-btn {
-      width: 54px;
-      padding: 0;
-    }
-
-    .hero {
-      position: relative;
-      min-height: 338px;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 380px;
-      gap: 24px;
-      padding: 34px 40px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      background:
-        radial-gradient(circle at 82% 44%, rgba(79, 127, 255, 0.30), transparent 34%),
-        linear-gradient(135deg, rgba(10, 18, 34, 0.95), rgba(17, 26, 58, 0.92)),
-        var(--surface);
-      box-shadow: var(--shadow);
-    }
-
-    body.light .hero {
-      background:
-        radial-gradient(circle at 82% 44%, rgba(79, 127, 255, 0.18), transparent 34%),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(235, 242, 255, 0.94));
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      right: 58px;
-      top: 72px;
-      width: 310px;
-      height: 180px;
-      background-image: radial-gradient(rgba(79, 127, 255, 0.56) 1px, transparent 1px);
-      background-size: 14px 14px;
-      opacity: 0.42;
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      align-content: center;
-    }
-
-    .eyebrow {
-      margin: 0 0 12px;
-      color: #74a3ff;
-      font: 800 0.78rem/1 var(--font-head);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: 0;
-      max-width: 760px;
-      font: 800 clamp(2.35rem, 4.7vw, 4.15rem)/1.03 var(--font-head);
-      letter-spacing: 0;
-    }
-
-    .gradient-text {
-      color: transparent;
-      background: linear-gradient(90deg, #4f7fff, #9b5cff);
-      -webkit-background-clip: text;
-      background-clip: text;
-    }
-
-    .hero-copy {
-      max-width: 680px;
-      margin: 18px 0 0;
-      color: var(--muted);
-      font-size: 1.03rem;
-      line-height: 1.8;
-    }
-
-    .hero-stats {
-      width: min(744px, 100%);
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0;
-      margin-top: 24px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      background: rgba(6, 13, 28, 0.62);
-    }
-
-    body.light .hero-stats {
-      background: rgba(255, 255, 255, 0.66);
-    }
-
-    .stat {
-      min-height: 82px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 18px 22px;
-    }
-
-    .stat + .stat { border-left: 1px solid var(--line); }
-
-    .stat-icon {
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border-radius: var(--radius);
-      color: var(--accent, var(--blue));
-      background: color-mix(in srgb, var(--accent, var(--blue)) 13%, transparent);
-    }
-
-    .stat strong {
-      display: block;
-      font: 800 1.5rem/1 var(--font-head);
-    }
-
-    .stat span {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 0.86rem;
-      font-weight: 700;
-    }
-
-    .hero-art {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      place-items: center;
-      min-height: 250px;
-    }
-
-    .book-stack {
-      position: absolute;
-      left: 18px;
-      bottom: 54px;
-      width: 126px;
-      height: 74px;
-      transform: rotate(-10deg);
-    }
-
-    .book-stack span {
-      position: absolute;
-      left: 0;
-      width: 120px;
-      height: 28px;
-      border: 1px solid rgba(130, 160, 255, 0.45);
-      border-radius: 6px;
-      background: linear-gradient(90deg, #233b98, #0e1b41);
-      box-shadow: 0 16px 24px rgba(0, 0, 0, 0.28);
-    }
-
-    .book-stack span:nth-child(1) { top: 0; }
-    .book-stack span:nth-child(2) { top: 24px; left: 10px; }
-    .book-stack span:nth-child(3) { top: 48px; left: 4px; }
-
-    .check-float {
-      position: absolute;
-      left: 42px;
-      top: 70px;
-      width: 56px;
-      height: 56px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(130, 160, 255, 0.50);
-      border-radius: var(--radius);
-      background: linear-gradient(145deg, #638bff, #22346f);
-      box-shadow: 0 18px 32px rgba(50, 86, 255, 0.25);
-      transform: rotate(-8deg);
-    }
-
-    .clipboard {
-      position: relative;
-      width: 172px;
-      height: 224px;
-      padding: 34px 22px 20px;
-      border: 1px solid rgba(166, 187, 255, 0.50);
-      border-radius: 18px;
-      background: linear-gradient(145deg, #eef4ff, #a9b8e8);
-      box-shadow: 0 26px 54px rgba(0, 0, 0, 0.36);
-      transform: rotate(8deg);
-      animation: float-card 7s ease-in-out infinite;
-    }
-
-    .clipboard::before {
-      content: "";
-      position: absolute;
-      width: 78px;
-      height: 34px;
-      left: 50%;
-      top: -18px;
-      transform: translateX(-50%);
-      border-radius: 10px 10px 5px 5px;
-      background: linear-gradient(180deg, #5578d9, #253a8f);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
-    }
-
-    .todo-line {
-      display: grid;
-      grid-template-columns: 24px 1fr;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 20px;
-      color: #315fdc;
-    }
-
-    .todo-line i {
-      width: 24px;
-      height: 24px;
-      display: grid;
-      place-items: center;
-      border-radius: 5px;
-      background: #5b7fff;
-      color: #fff;
-      font-style: normal;
-      font-weight: 800;
-    }
-
-    .todo-line span {
-      height: 9px;
-      border-radius: 99px;
-      background: #c7d2ee;
-      box-shadow: 0 15px 0 #d4dcef;
-    }
-
-    .pencil {
-      position: absolute;
-      right: 28px;
-      bottom: 30px;
-      width: 24px;
-      height: 126px;
-      border-radius: 99px;
-      background: linear-gradient(90deg, #2456d6, #6a94ff, #1f49c5);
-      transform: rotate(40deg);
-      box-shadow: 0 14px 22px rgba(0, 0, 0, 0.28);
-      animation: float-pencil 7s ease-in-out infinite;
-    }
-
-    .toolbar {
-      display: grid;
-      grid-template-columns: minmax(260px, 1fr) auto auto;
-      gap: 12px;
-      align-items: center;
-      margin: 22px 0 18px;
-    }
-
-    .search {
-      position: relative;
-    }
-
-    .search .icon {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-    }
-
-    .search input,
-    .sort-select {
-      width: 100%;
-      min-height: 46px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(10, 18, 34, 0.72);
-      color: var(--text);
-      padding: 0 14px;
-    }
-
-    body.light .search input,
-    body.light .sort-select {
-      background: rgba(255, 255, 255, 0.92);
-    }
-
-    .search input { padding-left: 44px; }
-
-    .filters {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-    }
-
-    .filter-btn {
-      min-height: 44px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(10, 18, 34, 0.72);
-      color: var(--muted);
-      padding: 0 18px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    body.light .filter-btn { background: rgba(255, 255, 255, 0.92); }
-
-    .filter-btn.active {
-      color: #fff;
-      background: linear-gradient(135deg, #3154ff, #2437ba);
-      border-color: rgba(96, 130, 255, 0.60);
-    }
-
-    .sort-select {
-      min-width: 126px;
-      font-weight: 800;
-    }
-
-    .week-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .week-card {
-      min-height: 218px;
-      display: grid;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(145deg, rgba(17, 29, 53, 0.90), rgba(8, 15, 29, 0.92));
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
-      transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
-    }
-
-    body.light .week-card {
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(238, 244, 255, 0.92));
-    }
-
-    .week-card:hover {
-      transform: translateY(-3px);
-      border-color: color-mix(in srgb, var(--accent) 58%, var(--line));
-      box-shadow: 0 22px 54px color-mix(in srgb, var(--accent) 18%, rgba(0, 0, 0, 0.28));
-    }
-
-    .card-head {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 12px;
-      align-items: start;
-    }
-
-    .week-number {
-      width: 50px;
-      height: 50px;
-      display: grid;
-      place-items: center;
-      border: 1px solid color-mix(in srgb, var(--accent) 70%, var(--line));
-      border-radius: var(--radius);
-      color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
-      font: 800 1.42rem/1 var(--font-head);
-    }
-
-    .week-title h2 {
-      margin: 2px 0 8px;
-      font: 800 1rem/1.25 var(--font-head);
-      letter-spacing: 0;
-    }
-
-    .week-title p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.45;
-    }
-
-    .bookmark {
-      color: var(--muted);
-    }
-
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin: 22px 0 16px;
-      color: var(--muted);
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-
-    .meta-row span {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .progress-row {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      font-size: 0.84rem;
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    .progress-track {
-      height: 7px;
-      overflow: hidden;
-      border-radius: 99px;
-      background: rgba(148, 163, 184, 0.16);
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: var(--progress);
-      border-radius: inherit;
-      background: var(--accent);
-    }
-
-    .start-link {
-      min-height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      border-radius: var(--radius);
-      color: #fff;
-      background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 65%, #111827));
-      font-weight: 800;
-    }
-
-    .empty-state {
-      display: none;
-      margin: 18px 0;
-      padding: 22px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .page-note {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      margin-top: 26px;
-      padding-top: 22px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.9rem;
-      text-align: center;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: rgba(2, 6, 23, 0.72);
-    }
-
-    .modal-backdrop.show { display: flex; }
-
-    .modal {
-      width: min(560px, 100%);
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      background: var(--surface);
-      box-shadow: var(--shadow);
-      padding: 22px;
-    }
-
-    .modal h2 {
-      margin: 0 0 10px;
-      font: 800 1.25rem/1.3 var(--font-head);
-    }
-
-    .modal p {
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .resource-list,
-    .contact-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .resource-link,
-    .contact-link {
-      min-height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: color-mix(in srgb, var(--surface-2) 76%, transparent);
-      color: var(--text);
-      font-weight: 800;
-    }
-
-    .resource-link span,
-    .contact-link span {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .brand-logo {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-      border-radius: 5px;
-      padding: 3px;
-      background: #fff;
-      flex: 0 0 auto;
-    }
-
-    .resource-link small,
-    .contact-link small {
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 18px;
-    }
-
-    @media (max-width: 1180px) {
-      .app { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .mobile-topbar { display: flex; }
-      .main { padding-top: 0; }
-      .hero { grid-template-columns: 1fr; }
-      .hero-art { display: none; }
-      .week-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 760px) {
-      .main { padding: 0 10px 24px; }
-      .main-actions { display: none; }
-      .mobile-topbar { gap: 6px; }
-      .mobile-topbar .brand { padding-bottom: 0; border-bottom: 0; }
-      .mobile-topbar .brand img { width: 38px; height: 38px; }
-      .mobile-topbar .brand span { display: none; }
-      .mobile-topbar .icon-btn { width: 38px; min-height: 38px; }
-      .hero { min-height: 0; padding: 22px 20px; }
-      h1 { font-size: clamp(2.05rem, 10vw, 3rem); }
-      .hero-stats { grid-template-columns: 1fr; }
-      .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
-      .toolbar { grid-template-columns: 1fr; }
-      .filters { padding-bottom: 2px; }
-      .sort-select { min-width: 100%; }
-      .week-grid { grid-template-columns: 1fr; }
-      .week-card { min-height: 232px; }
-      .page-note { align-items: flex-start; text-align: left; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: 0.001ms !important;
-      }
-    }
-
-    @keyframes float-card {
-      0%, 100% { transform: translateY(0) rotate(8deg); }
-      50% { transform: translateY(-7px) rotate(8deg); }
-    }
-
-    @keyframes float-pencil {
-      0%, 100% { transform: translateY(0) rotate(40deg); }
-      50% { transform: translateY(6px) rotate(40deg); }
-    }
-
-    @keyframes theme-wipe {
-      0% { opacity: 0.86; transform: translate(-50%, -50%) scale(0); }
-      80% { opacity: 0.86; }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(150); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Villar — NUmart Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080d18;--bg2:#0f1726;--bg3:#162035;--bg4:#1c2a45;--bg5:#223350;
+  --border:rgba(80,130,230,0.13);--border2:rgba(80,130,230,0.25);--border3:rgba(80,130,230,0.4);
+  --text:#dde8ff;--text2:#7a9acc;--text3:#3d5580;
+  --purple:#a78bfa;--teal:#34d399;--amber:#fbbf24;--coral:#f87171;
+  --blue:#60a5fa;--green:#86efac;--pink:#f472b6;--orange:#fb923c;--cyan:#22d3ee;--indigo:#818cf8;
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+  --r:8px;--rl:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:99px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(8,13,24,0.95);backdrop-filter:blur(14px);
+  border-bottom:0.5px solid var(--border);padding:10px 28px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.nav-brand{font-weight:700;font-size:13px;color:var(--blue);letter-spacing:.05em;margin-right:8px}
+.nav-a{font-size:12px;color:var(--text2);text-decoration:none;padding:4px 10px;border-radius:99px;
+  border:0.5px solid transparent;transition:all .15s}
+.nav-a:hover{border-color:var(--border2);background:var(--bg3);color:var(--text)}
+
+/* LAYOUT */
+main{max-width:1080px;margin:0 auto;padding:32px 24px 100px}
+.hero{margin-bottom:36px}
+.hero h1{font-size:24px;font-weight:700;color:var(--text);margin-bottom:4px}
+.hero p{font-size:13px;color:var(--text2)}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text3);margin:40px 0 12px;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;height:.5px;background:var(--border)}
+
+/* CARDS */
+.card{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:10px}
+.card-head{padding:10px 14px;border-bottom:.5px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card-body{padding:12px 14px}
+.badge{font-size:11px;font-weight:600;padding:2px 10px;border-radius:99px;font-family:var(--mono);white-space:nowrap}
+.desc{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.full{grid-column:1/-1}
+
+/* CODE */
+.cb{background:var(--bg);border:.5px solid var(--border);border-radius:var(--r);
+  padding:12px 14px;font-family:var(--mono);font-size:12px;line-height:2;overflow-x:auto;white-space:pre}
+.kw{color:var(--purple)}.fn{color:var(--blue)}.st{color:var(--teal)}.cm{color:var(--text3)}
+.sf{color:var(--coral)}.nm{color:var(--amber)}.rt{color:var(--pink)}.ky{color:var(--orange)}
+
+/* ANNOTATED CODE */
+.anno-wrap{background:var(--bg);border:.5px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+.anno-file{padding:6px 12px;border-bottom:.5px solid var(--border);font-size:11px;color:var(--text3);
+  font-family:var(--mono);display:flex;justify-content:space-between;align-items:center}
+.line-row{display:grid;grid-template-columns:44px 1fr;cursor:pointer;transition:background .1s;
+  border-bottom:.5px solid rgba(80,130,230,0.06)}
+.line-row:last-child{border-bottom:none}
+.line-row:hover{background:var(--bg3)}
+.line-row.open{background:var(--bg3)}
+.ln{font-size:10px;color:var(--text3);padding:7px 8px;text-align:right;
+  border-right:.5px solid var(--border);font-family:var(--mono);user-select:none;padding-top:8px}
+.lc{font-size:12px;padding:6px 12px;font-family:var(--mono);white-space:pre;color:var(--text)}
+.anno-panel{display:none;grid-column:1/-1;border-top:.5px solid var(--border);padding:10px 14px;background:var(--bg2)}
+.line-row.open .anno-panel{display:block}
+.anno-tag{font-size:11px;font-weight:700;color:var(--amber);font-family:var(--sans);margin-bottom:4px}
+.anno-text{font-size:13px;color:var(--text2);line-height:1.65}
+.anno-ex{margin-top:6px;padding:7px 10px;background:var(--bg);border-radius:var(--r);
+  font-family:var(--mono);font-size:11.5px;color:var(--text);white-space:pre;border:.5px solid var(--border)}
+.hint{font-size:11px;color:var(--text3);padding:6px 12px 0;font-style:italic}
+
+/* FLOW TABS */
+.tab-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab-btn{padding:6px 14px;border-radius:99px;border:.5px solid var(--border2);
+  background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s;font-family:var(--sans)}
+.tab-btn:hover{background:var(--bg3);color:var(--text)}
+.tab-btn.active{background:var(--bg4);border-color:var(--blue);color:var(--blue)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* RULE BOXES */
+.rule{background:var(--bg3);border:.5px solid var(--border2);border-radius:var(--r);
+  padding:10px 12px;font-size:12.5px;color:var(--text2);line-height:1.65;margin-bottom:8px}
+.rule strong{color:var(--text);font-weight:600;display:block;margin-bottom:2px}
+
+/* Q&A */
+.qa-item{border:.5px solid var(--border);border-radius:var(--r);margin-bottom:7px;
+  overflow:hidden;background:var(--bg2)}
+.qa-q{padding:11px 14px;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;transition:background .1s}
+.qa-q:hover{background:var(--bg3)}
+.qa-icon{color:var(--text3);font-size:18px;transition:transform .2s;flex-shrink:0;font-style:normal}
+.qa-item.open .qa-icon{transform:rotate(45deg);color:var(--blue)}
+.qa-a{display:none;padding:10px 14px 13px;font-size:13px;color:var(--text2);
+  line-height:1.7;border-top:.5px solid var(--border)}
+.qa-item.open .qa-a{display:block}
+.qa-code{font-family:var(--mono);font-size:11.5px;background:var(--bg);padding:1px 5px;
+  border-radius:4px;color:var(--text)}
+.qa-a .cb{margin-top:8px;font-size:11.5px}
+
+/* FLOW DIAGRAM */
+.flow{display:flex;flex-direction:column;gap:0}
+.flow-node{background:var(--bg3);border:.5px solid var(--border2);border-radius:var(--r);
+  padding:10px 14px;font-size:13px;color:var(--text);position:relative}
+.flow-node.highlight{border-color:var(--blue);background:var(--bg4)}
+.flow-arrow{text-align:center;padding:3px 0;font-size:18px;color:var(--text3)}
+.flow-label{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* SYNTAX TABLE */
+.syn-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.syn-table th{padding:8px 12px;font-size:11px;color:var(--text3);font-weight:500;
+  border-bottom:.5px solid var(--border);text-align:left;font-family:var(--sans)}
+.syn-table td{padding:9px 12px;border-bottom:.5px solid var(--border);vertical-align:top}
+.syn-table tr:last-child td{border-bottom:none}
+.syn-table td:first-child{font-family:var(--mono);color:var(--text);font-weight:500}
+.syn-table td:nth-child(2){color:var(--text2)}
+.syn-table td:last-child{color:var(--text3);font-family:var(--mono);font-size:11px}
+
+/* MISC */
+code{font-family:var(--mono);font-size:12px;background:var(--bg3);padding:1px 5px;border-radius:4px;color:var(--text)}
+</style>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar" aria-label="Website navigation">
-      <div>
-        <a class="brand" href="index.html" aria-label="BUSPROS Exam Hub home">
-          <img src="assets/cedd-logo-mark.png" alt="">
-          <span>
-            <strong>BUSPROS Exam Hub</strong>
-            <span>National University - Fairview</span>
-          </span>
-        </a>
-        <nav class="nav" aria-label="Main navigation">
-          <a class="active" href="index.html"><svg class="icon" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"></path><path d="M5 10v10h14V10"></path><path d="M9 20v-6h6v6"></path></svg>Home</a>
-          <a href="#exams"><svg class="icon" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path><path d="M9 13h6"></path><path d="M9 17h3"></path></svg>Exams</a>
-          <button type="button" data-open-modules><svg class="icon" viewBox="0 0 24 24"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3Z"></path></svg>Modules</button>
-          <a href="#how-it-works"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><path d="M12 17h.01"></path></svg>How It Works</a>
-          <button type="button" data-open-contacts><svg class="icon" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>Contacts</button>
-        </nav>
-      </div>
 
-      <div></div>
+<nav>
+  <span class="nav-brand">Villar — NUmart</span>
+  <a class="nav-a" href="#foundation">Foundation</a>
+  <a class="nav-a" href="#dict-codes">dict_Codes</a>
+  <a class="nav-a" href="#apply">apply_promo</a>
+  <a class="nav-a" href="#remove">remove_promo</a>
+  <a class="nav-a" href="#total">get_final_total</a>
+  <a class="nav-a" href="#summary">display_price_summary</a>
+  <a class="nav-a" href="#menu">main.py menu</a>
+  <a class="nav-a" href="#syntax">Syntax guide</a>
+  <a class="nav-a" href="#qa">Q&amp;A</a>
+</nav>
 
-      <div>
-        <div class="developer-card">
-          <img class="profile-photo" src="assets/pfp.png" alt="Kim Cedrick C. Villar profile picture">
-          <p>Developed by</p>
-          <strong>Kim Cedrick C. Villar</strong>
-          <span><svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>Still Learning</span>
-        </div>
-        <div class="copyright">© 2026 BUSPROS Exam Hub<br>All rights reserved.</div>
-      </div>
-    </aside>
+<main>
+<div class="hero">
+  <h1>Member 3 — Villar, Kim Cedrick</h1>
+  <p>Role: Price Calculation &amp; Promo Codes &nbsp;|&nbsp; IT-252 Group 4 &nbsp;|&nbsp; Complete line-by-line guide</p>
+</div>
 
-    <main class="main">
-      <div class="mobile-topbar">
-        <a class="brand" href="index.html">
-          <img src="assets/cedd-logo-mark.png" alt="">
-          <span>
-            <strong>BUSPROS Exam Hub</strong>
-            <span>National University - Fairview</span>
-          </span>
-        </a>
-        <button class="icon-btn" id="mobile-about-btn" type="button" title="About this website" aria-label="About this website">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-        </button>
-        <button class="icon-btn" type="button" data-open-modules title="Download modules" aria-label="Download modules">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3Z"></path></svg>
-        </button>
-        <button class="icon-btn" type="button" data-open-contacts title="Contacts" aria-label="Contacts">
-          <svg class="icon" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
-        </button>
-        <button class="icon-btn" type="button" data-theme-toggle title="Toggle theme" aria-label="Toggle theme">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
-        </button>
-      </div>
+<!-- ═══════════════════════════════════════════
+     SECTION 0 — FOUNDATION
+═══════════════════════════════════════════ -->
+<div class="sec-label" id="foundation">0 — Foundation: where it all starts</div>
+<p class="desc" style="margin-bottom:12px">Before your promo code functions can exist, the NUmart class must be set up. Your attributes <code>self.discount</code> and <code>self.promo_used</code> are born here. This is the origin of everything your code touches.</p>
 
-      <div class="main-actions">
-        <button class="pill-btn" type="button" data-open-about>
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-          About This Website
-        </button>
-        <button class="pill-btn" type="button" data-open-modules>
-          <svg class="icon" viewBox="0 0 24 24"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3Z"></path></svg>
-          References
-        </button>
-        <button class="pill-btn" type="button" data-open-contacts>
-          <svg class="icon" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-10 6L2 7"></path></svg>
-          Contacts
-        </button>
-        <button class="icon-btn" id="theme-toggle" type="button" data-theme-toggle title="Toggle theme" aria-label="Toggle theme">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
-        </button>
-      </div>
+<div class="card">
+  <div class="card-head">
+    <span class="badge" style="background:rgba(139,92,246,.15);color:#a78bfa;border:.5px solid rgba(139,92,246,.4)">system.py — lines 1–13</span>
+    <span style="font-size:12px;color:var(--text2)">Imports + Constants — runs before anything else</span>
+  </div>
+  <div class="card-body">
+    <div class="anno-wrap">
+      <div class="anno-file"><span>system.py</span><span>click any line to explain</span></div>
+      <div id="foundation-lines"></div>
+    </div>
+  </div>
+</div>
 
-      <section class="hero" id="home" aria-labelledby="hub-title">
-        <div class="hero-content">
-          <p class="eyebrow">Business Processes</p>
-          <h1 id="hub-title">BUSPROS <span class="gradient-text">Weekly Exams</span></h1>
-          <p class="hero-copy">Practice and master your business process modules through weekly exams. Each module opens as its own exam with separate attempts, scoring, and question banks.</p>
-          <div class="hero-stats" aria-label="Exam collection summary">
-            <div class="stat" style="--accent: var(--blue)"><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M3 10h18"></path></svg></span><div><strong id="metric-weeks">6</strong><span>Weeks</span></div></div>
-            <div class="stat" style="--accent: var(--teal)"><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path><path d="M9 13h6"></path><path d="M9 17h3"></path></svg></span><div><strong id="metric-items">303</strong><span>Questions</span></div></div>
-            <div class="stat" style="--accent: var(--violet)"><span class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span><div><strong>20</strong><span>Min Per Exam</span></div></div>
+<div class="card">
+  <div class="card-head">
+    <span class="badge" style="background:rgba(139,92,246,.15);color:#a78bfa;border:.5px solid rgba(139,92,246,.4)">system.py — lines 26–36</span>
+    <span style="font-size:12px;color:var(--text2)">NUmart class + __init__ — where self.discount and self.promo_used are born</span>
+  </div>
+  <div class="card-body">
+    <div class="anno-wrap">
+      <div class="anno-file"><span>system.py</span><span>click any line to explain</span></div>
+      <div id="init-lines"></div>
+    </div>
+    <div class="rule" style="margin-top:10px">
+      <strong>Why does this matter for your part?</strong>
+      Line 34 sets <code>self.discount = 0</code> and line 35 sets <code>self.promo_used = ""</code>. These are the two attributes YOUR functions read and change. Without <code>__init__</code> setting them first, <code>apply_promo()</code> would crash trying to use a variable that doesn't exist yet.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — DICT_CODES
+═══════════════════════════════════════════ -->
+<div class="sec-label" id="dict-codes">1 — dict_Codes (lines 9–13)</div>
+
+<div class="card">
+  <div class="card-head">
+    <span class="badge" style="background:rgba(251,191,36,.12);color:#fbbf24;border:.5px solid rgba(251,191,36,.4)">system.py — lines 9–13</span>
+    <span style="font-size:12px;color:var(--text2)">The promo code dictionary — constant, never changes at runtime</span>
+  </div>
+  <div class="card-body">
+    <div class="anno-wrap">
+      <div class="anno-file"><span>system.py</span><span>click any line to explain</span></div>
+      <div id="dict-lines"></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="rule"><strong>Syntax: dictionary literal</strong><code>{ key : value, key : value }</code> — curly braces wrap it, colon separates key from value, comma separates pairs.</div>
+      <div class="rule"><strong>Why outside the class?</strong>It's a module-level constant — shared by the whole file. All methods in NUmart can use it directly by name without <code>self</code>.</div>
+      <div class="rule"><strong>Key type</strong>Keys are strings (<code>"SAVE10"</code>). When you do <code>code in dict_Codes</code>, Python checks if that string is a key. Values are integers (the discount %).</div>
+      <div class="rule"><strong>Lookup speed</strong>Dictionary lookup is O(1) — instant, no matter how many entries. No loop needed to find a key.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — APPLY_PROMO
+═══════════════════════════════════════════ -->
+<div class="sec-label" id="apply">2 — apply_promo() (lines 206–222)</div>
+
+<div class="card">
+  <div class="card-head">
+    <span class="badge" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.3)">system.py — lines 206–222</span>
+    <span style="font-size:12px;color:var(--text2)">Validates and applies a promo code. Returns True or False.</span>
+  </div>
+  <div class="card-body">
+    <div class="anno-wrap">
+      <div class="anno-file"><span>system.py</span><span>click any line to explain</span></div>
+      <div id="apply-lines"></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="rule"><strong>Two-layer promo guard</strong>Layer 1: check <code>self.promo_used</code> (not empty = already applied, block it). Layer 2: check <code>code in dict_Codes</code> (not found = invalid). Both must pass for the promo to apply.</div>
+      <div class="rule"><strong>Return value matters</strong><code>return True</code> tells the menu "it worked, stop asking." <code>return False</code> tells the menu "it failed, ask again." The while True loop in main.py uses this.</div>
+      <div class="rule"><strong>.strip().upper() — why both?</strong><code>.strip()</code> removes accidental spaces. <code>.upper()</code> converts to uppercase. So <code>" save10 "</code> → <code>"SAVE10"</code> and matches the dictionary key correctly.</div>
+      <div class="rule"><strong>Two things set at once</strong><code>self.discount</code> stores the number (e.g. 15). <code>self.promo_used</code> stores the code name (e.g. "STUDENT15"). Both are needed — discount for math, promo_used for display and the guard check.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — REMOVE_PROMO
+═══════════════════════════════════════════ -->
+<div class="sec-label" id="remove">3 — remove_promo() (lines 224–231)</div>
+
+<div class="card">
+  <div class="card-head">
+    <span class="badge" style="background:rgba(248,113,113,.1);color:#f87171;border:.5px solid rgba(248,113,113,.3)">system.py — lines 224–231</span>
+    <span style="font-size:12px;color:var(--text2)">Clears the active promo and resets both attributes to default.</span>
+  </div>
+  <div class="card-body">
+    <div class="anno-wrap">
+      <div class="anno-file"><span>system.py</span><span>click any line to explain</span></div>
+      <div id="remove-lines"></div>
+    </div>
+    <div class="rule" style="margin-top:10px"><strong>Why reset BOTH attributes?</strong>If only <code>self.discount = 0</code> is reset but <code>self.promo_used</code> still holds "STUDENT15", the guard in <code>apply_promo()</code> would think a promo is still active and block new codes forever. Both must be cleared together.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — GET_FINAL_TOTAL
+═══════════════════════════════════════════ -->
+<div class="sec-label" id="total">4 — get_final_total() (lines 233–238)</div>
+
+<div class="card">
+  <div class="card-head">
+    <span class="badge" style="background:rgba(96,165,250,.1);color:#60a5fa;border:.5px solid rgba(96,165,250,.3)">system.py — lines 233–238</span>
+    <span style="font-size:12px;color:var(--text2)">The math engine — returns 3 values: subtotal, discount amount, final due.</span>
+  </div>
+  <div class="card-body">
+    <div class="anno-wrap">
+      <div class="anno-file"><span>system.py</span><span>click any line to explain</span></div>
+      <div id="total-lines"></div>
+    </div>
+    <div class="card" style="margin-top:10px;background:var(--bg)">
+      <div class="card-head"><span style="font-size:12px;color:var(--text2)">Live math example — STUDENT15 on ₱200 cart</span></div>
+      <div class="card-body">
+        <div class="grid2">
+          <div>
+            <div class="rule"><strong>total = cart.compute_total()</strong>Loops through every item in the cart: price × qty per item, then adds them all. Result: ₱200.00</div>
+            <div class="rule"><strong>discounted = 200 × (15 / 100)</strong>15 / 100 = 0.15 &nbsp;→&nbsp; 200 × 0.15 = 30.0 &nbsp;→&nbsp; ₱30.00 deducted</div>
+            <div class="rule"><strong>final = 200 − 30</strong>₱170.00 — what the user actually pays</div>
+          </div>
+          <div>
+            <div class="rule"><strong>Why return 3 values?</strong><code>display_price_summary()</code> needs all 3 to show the breakdown. <code>process_payment()</code> needs <code>final</code> for Amount Due. <code>_generate_receipt()</code> needs all 3 for the receipt. Returning once avoids recomputing.</div>
+            <div class="rule"><strong>What if discount = 0?</strong>discounted = total × (0/100) = 0. final = total − 0 = total. No discount applied, math still works correctly.</div>
           </div>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="book-stack"><span></span><span></span><span></span></div>
-          <div class="check-float"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
-          <div class="clipboard">
-            <div class="todo-line"><i>✓</i><span></span></div>
-            <div class="todo-line"><i>✓</i><span></span></div>
-            <div class="todo-line"><i>✓</i><span></span></div>
-          </div>
-          <div class="pencil"></div>
-        </div>
-      </section>
-
-      <section class="toolbar" id="exams" aria-label="Exam controls">
-        <label class="search">
-          <svg class="icon" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
-          <input id="search-input" type="search" placeholder="Search week, module, or topic..." autocomplete="off">
-        </label>
-        <div class="filters" role="group" aria-label="Module filters">
-          <button class="filter-btn active" type="button" data-filter="all">All</button>
-          <button class="filter-btn" type="button" data-filter="accounting">Accounting</button>
-          <button class="filter-btn" type="button" data-filter="operations">Operations</button>
-          <button class="filter-btn" type="button" data-filter="people">People</button>
-          <button class="filter-btn" type="button" data-filter="projects">Projects</button>
-        </div>
-        <select class="sort-select" id="sort-select" aria-label="Sort exams">
-          <option value="week-asc">Sort by week</option>
-          <option value="week-desc">Newest first</option>
-          <option value="progress-desc">Most progress</option>
-        </select>
-      </section>
-
-      <section class="week-grid" id="week-grid" aria-label="BUSPROS weekly exams"></section>
-      <p class="empty-state" id="empty-state">No matching weekly exam found.</p>
-
-      <p class="page-note" id="how-it-works">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-        This website is a student-developed project for academic and educational purposes. Saved attempts stay in this browser.
-      </p>
-    </main>
-  </div>
-
-  <div class="modal-backdrop" id="about-modal" role="dialog" aria-modal="true" aria-labelledby="about-title">
-    <div class="modal">
-      <h2 id="about-title">About This Website</h2>
-      <p>BUSPROS Exam Hub is a static reviewer launcher for weekly SAP S/4HANA practice exams. Each week opens in its own page, so question banks and saved attempts remain separate.</p>
-      <p>Progress is stored locally in your browser. Publishing this on GitHub Pages will still work as long as the exam HTML files and assets folder stay beside this index page.</p>
-      <div class="modal-actions">
-        <button class="pill-btn" type="button" id="close-about">Close</button>
+        <div class="cb" style="margin-top:8px"><span class="cm"># Interactive demo — change these values mentally:</span>
+total      = <span class="nm">200.00</span>     <span class="cm"># cart.compute_total() result</span>
+discount   = <span class="nm">15</span>         <span class="cm"># self.discount (STUDENT15)</span>
+discounted = <span class="nm">200</span> * (<span class="nm">15</span> / <span class="nm">100</span>)  <span class="cm"># → 30.0</span>
+final      = <span class="nm">200</span> - <span class="nm">30</span>          <span class="cm"># → 170.0</span>
+<span class="kw">return</span> <span class="nm">200.0</span>, <span class="nm">30.0</span>, <span class="nm">170.0</span>   <span class="cm"># → tuple of 3 values</span></div>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="modal-backdrop" id="modules-modal" role="dialog" aria-modal="true" aria-labelledby="modules-title">
-    <div class="modal">
-      <h2 id="modules-title">Module References</h2>
-      <p>Download the BUSPROS PDF files here for review while answering the weekly exams.</p>
-      <div class="resource-list">
-        <a class="resource-link" href="assets/modules/BUSPROS-WEEK-6.pdf" download><span><svg class="icon" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path></svg>BUSPROS Week 6</span><small>PDF</small></a>
-        <a class="resource-link" href="assets/modules/BUSPROS-WEEK-8.pdf" download><span><svg class="icon" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path></svg>BUSPROS Week 8</span><small>PDF</small></a>
-        <a class="resource-link" href="assets/modules/BUSPROS-WEEK-9.pdf" download><span><svg class="icon" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path></svg>BUSPROS Week 9</span><small>PDF</small></a>
-        <a class="resource-link" href="assets/modules/BUSPROS-WEEK-10.pdf" download><span><svg class="icon" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path></svg>BUSPROS Week 10</span><small>PDF</small></a>
-        <a class="resource-link" href="assets/modules/BUSPROS-WEEK-11.pdf" download><span><svg class="icon" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path></svg>BUSPROS Week 11</span><small>PDF</small></a>
-        <a class="resource-link" href="assets/modules/BUSPROS-WEEK-12.pdf" download><span><svg class="icon" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path></svg>BUSPROS Week 12</span><small>PDF</small></a>
-      </div>
-      <div class="modal-actions">
-        <button class="pill-btn" type="button" id="close-modules">Close</button>
-      </div>
+<!-- ═══════════════════════════════════════════
+     SECTION 5 — DISPLAY_PRICE_SUMMARY
+═══════════════════════════════════════════ -->
+<div class="sec-label" id="summary">5 — display_price_summary() (lines 240–262)</div>
+
+<div class="card">
+  <div class="card-head">
+    <span class="badge" style="background:rgba(134,239,172,.1);color:#86efac;border:.5px solid rgba(134,239,172,.3)">system.py — lines 240–262</span>
+    <span style="font-size:12px;color:var(--text2)">Formats and prints the full price breakdown to the terminal.</span>
+  </div>
+  <div class="card-body">
+    <div class="anno-wrap">
+      <div class="anno-file"><span>system.py</span><span>click any line to explain</span></div>
+      <div id="display-lines"></div>
+    </div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="rule"><strong>Guard clause first</strong>If the cart is empty, print a warning and <code>return</code> immediately. This prevents showing a ₱0.00 summary which would confuse the user.</div>
+      <div class="rule"><strong>f-string formatting :.2f</strong><code>f"₱{total:.2f}"</code> — the <code>:.2f</code> means "show exactly 2 decimal places." Without it, 170.0 prints as 170.0 not ₱170.00.</div>
+      <div class="rule"><strong>Conditional promo lines</strong><code>if self.discount &gt; 0:</code> — only print the Promo and Discount rows if a code is active. If no promo, those lines are skipped entirely.</div>
+      <div class="rule"><strong>Calls your own function</strong>Line 246: <code>total, discounted, final = self.get_final_total()</code> — it calls get_final_total() and unpacks all 3 return values at once into 3 variables.</div>
     </div>
   </div>
+</div>
 
-  <div class="modal-backdrop" id="contacts-modal" role="dialog" aria-modal="true" aria-labelledby="contacts-title">
-    <div class="modal">
-      <h2 id="contacts-title">Contacts</h2>
-      <p>Find Kim Cedrick C. Villar through these profiles.</p>
-      <div class="contact-list">
-        <a class="contact-link" href="https://github.com/Ceddrickx" target="_blank" rel="noopener noreferrer"><span><img class="brand-logo" src="https://cdn.simpleicons.org/github/181717" alt="">GitHub</span><small>@Ceddrickx</small></a>
-        <a class="contact-link" href="https://www.linkedin.com/in/kim-villar/" target="_blank" rel="noopener noreferrer"><span><img class="brand-logo" src="https://cdn.simpleicons.org/linkedin/0A66C2" alt="">LinkedIn</span><small>kim-villar</small></a>
-        <a class="contact-link" href="https://www.facebook.com/kimcedrickconcepcion.villar" target="_blank" rel="noopener noreferrer"><span><img class="brand-logo" src="https://cdn.simpleicons.org/facebook/0866FF" alt="">Facebook</span><small>Profile</small></a>
-        <a class="contact-link" href="https://www.instagram.com/cdrck_vllr/" target="_blank" rel="noopener noreferrer"><span><img class="brand-logo" src="https://cdn.simpleicons.org/instagram/E4405F" alt="">Instagram</span><small>@cdrck_vllr</small></a>
-      </div>
-      <div class="modal-actions">
-        <button class="pill-btn" type="button" id="close-contacts">Close</button>
-      </div>
-    </div>
+<!-- ═══════════════════════════════════════════
+     SECTION 6 — MAIN.PY MENU
+═══════════════════════════════════════════ -->
+<div class="sec-label" id="menu">6 — main.py menu (lines 142–190)</div>
+
+<div class="card">
+  <div class="card-head">
+    <span class="badge" style="background:rgba(129,140,248,.1);color:#818cf8;border:.5px solid rgba(129,140,248,.3)">main.py — lines 142–190</span>
+    <span style="font-size:12px;color:var(--text2)">The user-facing menu that calls your system.py functions.</span>
   </div>
+  <div class="card-body">
+    <div class="anno-wrap">
+      <div class="anno-file"><span>main.py</span><span>click any line to explain</span></div>
+      <div id="menu-lines"></div>
+    </div>
+    <div class="rule" style="margin-top:10px"><strong>How main.py and system.py connect</strong>main.py calls <code>store.apply_promo(code)</code> — this goes to system.py's <code>apply_promo()</code> method. main.py handles the user input loop, system.py handles the logic. They work together but are separated by responsibility.</div>
+  </div>
+</div>
 
-  <script>
-    const ICONS = {
-      play: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>',
-      arrow: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>',
-      list: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg>',
-      clock: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>',
-      bookmark: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>'
-    };
+<!-- ═══════════════════════════════════════════
+     SECTION 7 — ALSO TOUCHES YOUR PART
+═══════════════════════════════════════════ -->
+<div class="sec-label">7 — Other places that use your attributes</div>
+<p class="desc" style="margin-bottom:12px">Your <code>self.discount</code> and <code>self.promo_used</code> are read/changed by other functions too. These are not your lines to defend, but you should know they exist so you can answer related questions.</p>
 
-    const WEEKS = [
-      { week: 6, code: 'BUSPROS-W6', module: 'Financial Accounting', short: 'FI - SAP S/4HANA Using Global Bike', tag: 'accounting', file: 'BUSPROS-Week-6.html', questions: 48, accent: '#4f7fff' },
-      { week: 8, code: 'BUSPROS-W8', module: 'Controlling', short: 'CO - SAP S/4HANA Global Bike', tag: 'accounting', file: 'BUSPROS-Week-8.html', questions: 48, accent: '#8b5cf6' },
-      { week: 9, code: 'BUSPROS-W9', module: 'Human Capital Management', short: 'HCM - SAP S/4HANA Using Global Bike', tag: 'people', file: 'BUSPROS-Week-9.html', questions: 48, accent: '#f59e0b' },
-      { week: 10, code: 'BUSPROS-W10', module: 'Warehouse Management', short: 'WM - SAP S/4HANA Using Global Bike', tag: 'operations', file: 'BUSPROS-Week-10.html', questions: 53, accent: '#14b8a6' },
-      { week: 11, code: 'BUSPROS-W11', module: 'Project Management', short: 'PS - SAP S/4HANA Global Bike', tag: 'projects', file: 'BUSPROS-Week-11.html', questions: 53, accent: '#4f7fff' },
-      { week: 12, code: 'BUSPROS-W12', module: 'Enterprise Asset Management', short: 'EAM - SAP S/4HANA Global Bike', tag: 'operations', file: 'BUSPROS-Week-12.html', questions: 53, accent: '#ec4899' }
-    ];
+<div class="tab-bar" id="other-tabs">
+  <button class="tab-btn active" data-tab="display-cart" onclick="switchTab('other','display-cart')">display_cart()</button>
+  <button class="tab-btn" data-tab="process-pay" onclick="switchTab('other','process-pay')">process_payment()</button>
+  <button class="tab-btn" data-tab="receipt" onclick="switchTab('other','receipt')">_generate_receipt()</button>
+</div>
 
-    const grid = document.getElementById('week-grid');
-    const emptyState = document.getElementById('empty-state');
-    const searchInput = document.getElementById('search-input');
-    const sortSelect = document.getElementById('sort-select');
-    const modals = {
-      about: document.getElementById('about-modal'),
-      modules: document.getElementById('modules-modal'),
-      contacts: document.getElementById('contacts-modal')
-    };
-    let activeFilter = 'all';
+<div class="tab-panel active" id="other-display-cart">
+  <div class="card"><div class="card-body">
+    <div class="rule"><strong>display_cart() — lines 155–167</strong>Also reads <code>self.discount</code> to show a live discount preview inside the cart view. If discount &gt; 0, it shows the deduction and final amount due right in the cart — before the user even goes to Payment.</div>
+    <div class="cb" style="margin-top:8px"><span class="kw">if</span> <span class="sf">self</span>.discount > <span class="nm">0</span>:
+    discounted = total * (<span class="sf">self</span>.discount / <span class="nm">100</span>)
+    final      = total - discounted
+    print(<span class="st">f"  Discount  : {self.discount}% (-₱{discounted:.2f})"</span>)
+    print(<span class="st">f"  Amount Due: ₱{final:.2f}"</span>)</div>
+  </div></div>
+</div>
 
-    function storageAvailable() {
-      try {
-        const key = '__buspros_hub_test__';
-        localStorage.setItem(key, key);
-        localStorage.removeItem(key);
-        return true;
-      } catch (_) {
-        return false;
-      }
-    }
+<div class="tab-panel" id="other-process-pay">
+  <div class="card"><div class="card-body">
+    <div class="rule"><strong>process_payment() — line 270</strong>Calls <code>self.get_final_total()</code> — your function — to get the final amount due before showing the payment screen. Whatever discount your promo set is already baked into the final number shown here.</div>
+    <div class="cb" style="margin-top:8px"><span class="kw">def</span> <span class="fn">process_payment</span>(<span class="sf">self</span>):
+    total, discounted, final = <span class="sf">self</span>.<span class="fn">get_final_total</span>()  <span class="cm"># ← calls YOUR function</span>
+    <span class="cm"># final is shown as "Amount Due" in the payment screen</span></div>
+  </div></div>
+</div>
 
-    const canUseStorage = storageAvailable();
+<div class="tab-panel" id="other-receipt">
+  <div class="card"><div class="card-body">
+    <div class="rule"><strong>_generate_receipt() — lines 440, 449–460</strong>After payment, the receipt checks <code>self.discount &gt; 0</code> to print the discount line. Then it saves <code>self.discount</code> into the transaction record for history. Finally it resets BOTH your attributes back to 0 and "" — the same reset your <code>remove_promo()</code> does, but after checkout.</div>
+    <div class="cb" style="margin-top:8px"><span class="cm"># Line 440 — receipt shows discount if active</span>
+<span class="kw">if</span> <span class="sf">self</span>.discount > <span class="nm">0</span>:
+    print(<span class="st">f"  |  Discount  : {discounted_str}"</span>)
 
-    function storagePrefix(code) {
-      return code.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-    }
+<span class="cm"># Lines 449–456 — saves to history including discount</span>
+<span class="sf">self</span>.history.enqueue({
+    <span class="st">"discount"</span>  : <span class="sf">self</span>.discount,  <span class="cm"># ← your attribute saved here</span>
+    ...
+})
 
-    function savedState(week) {
-      if (!canUseStorage) return null;
-      try {
-        const raw = localStorage.getItem(storagePrefix(week.code) + '_v2_examState');
-        return raw ? JSON.parse(raw) : null;
-      } catch (_) {
-        return null;
-      }
-    }
+<span class="cm"># Lines 459–460 — resets after checkout</span>
+<span class="sf">self</span>.discount   = <span class="nm">0</span>   <span class="cm"># same as your remove_promo()</span>
+<span class="sf">self</span>.promo_used = <span class="st">""</span>  <span class="cm"># same as your remove_promo()</span></div>
+  </div></div>
+</div>
 
-    function progressFor(week) {
-      const saved = savedState(week);
-      if (!saved || !saved.answers) return 0;
-      const answered = Object.values(saved.answers).filter(value => {
-        if (Array.isArray(value)) return value.some(item => String(item || '').trim());
-        return String(value || '').trim();
-      }).length;
-      return Math.max(0, Math.min(100, Math.round((answered / week.questions) * 100)));
-    }
+<!-- ═══════════════════════════════════════════
+     SECTION 8 — SYNTAX GUIDE
+═══════════════════════════════════════════ -->
+<div class="sec-label" id="syntax">8 — Syntax &amp; semantics guide</div>
+<div class="card">
+  <div class="card-body">
+    <table class="syn-table">
+      <thead><tr><th>Syntax</th><th>What it means</th><th>In your code</th></tr></thead>
+      <tbody id="syn-body"></tbody>
+    </table>
+  </div>
+</div>
 
-    function isContinuable(week) {
-      const saved = savedState(week);
-      return !!saved && !saved.submitted && progressFor(week) > 0;
-    }
+<!-- ═══════════════════════════════════════════
+     SECTION 9 — Q&A
+═══════════════════════════════════════════ -->
+<div class="sec-label" id="qa">9 — Q&amp;A</div>
+<div id="qa-list"></div>
 
-    function filteredWeeks() {
-      const term = searchInput.value.trim().toLowerCase();
-      const sort = sortSelect.value;
-      return WEEKS
-        .filter(week => {
-          const haystack = `${week.week} ${week.code} ${week.module} ${week.short}`.toLowerCase();
-          return (activeFilter === 'all' || week.tag === activeFilter) && (!term || haystack.includes(term));
-        })
-        .sort((a, b) => {
-          if (sort === 'week-desc') return b.week - a.week;
-          if (sort === 'progress-desc') return progressFor(b) - progressFor(a);
-          return a.week - b.week;
-        });
-    }
+</main>
 
-    function renderWeeks() {
-      const weeks = filteredWeeks();
-      grid.innerHTML = weeks.map(week => {
-        const progress = progressFor(week);
-        const continuing = isContinuable(week);
-        const buttonLabel = continuing ? 'Continue Exam' : 'Start Exam';
-        return `
-          <article class="week-card" style="--accent: ${week.accent}; --progress: ${progress}%;" data-week="${week.week}">
-            <div class="card-head">
-              <span class="week-number">${week.week}</span>
-              <div class="week-title">
-                <h2>${week.module}</h2>
-                <p>${week.short}</p>
-              </div>
-              <span class="bookmark" title="${continuing ? 'Saved attempt found' : 'Ready'}">${ICONS.bookmark}</span>
-            </div>
-            <div class="meta-row">
-              <span>${ICONS.list}${week.questions} Questions</span>
-              <span>${ICONS.clock}20 Minutes</span>
-            </div>
-            <div class="progress-row">
-              <span>Progress</span>
-              <span class="progress-track"><span class="progress-fill"></span></span>
-              <strong>${progress}%</strong>
-            </div>
-            <a class="start-link" href="${week.file}" title="${buttonLabel} ${week.code}"><span>${buttonLabel}</span>${ICONS.arrow}</a>
-          </article>
-        `;
-      }).join('');
-      emptyState.style.display = weeks.length ? 'none' : 'block';
-    }
-
-    function applyTheme(theme, origin) {
-      if (origin) {
-        document.body.style.setProperty('--theme-x', `${origin.clientX}px`);
-        document.body.style.setProperty('--theme-y', `${origin.clientY}px`);
-      }
-      document.body.style.setProperty('--theme-wipe-color', theme === 'light' ? '#edf3fb' : '#050914');
-      document.body.classList.remove('theme-switching');
-      void document.body.offsetWidth;
-      document.body.classList.add('theme-switching');
-      document.body.classList.toggle('light', theme === 'light');
-      if (canUseStorage) localStorage.setItem('buspros_hub_theme', theme);
-      window.setTimeout(() => document.body.classList.remove('theme-switching'), 620);
-    }
-
-    function openModal(name) {
-      Object.values(modals).forEach(modal => modal.classList.remove('show'));
-      modals[name].classList.add('show');
-      modals[name].querySelector('button, a')?.focus();
-    }
-
-    function closeModals() {
-      Object.values(modals).forEach(modal => modal.classList.remove('show'));
-    }
-
-    document.querySelectorAll('.filter-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        activeFilter = button.dataset.filter;
-        document.querySelectorAll('.filter-btn').forEach(item => item.classList.toggle('active', item === button));
-        renderWeeks();
+<script>
+/* ─── ANNOTATED LINES DATA ─── */
+function makeLines(containerId, lines){
+  const c = document.getElementById(containerId);
+  lines.forEach((l,i)=>{
+    const row = document.createElement('div');
+    row.className = 'line-row';
+    if(l.ann){
+      row.innerHTML = `<div class="ln">${l.n}</div><div class="lc">${l.code}</div><div class="anno-panel"><div class="anno-tag">${l.ann.tag}</div><div class="anno-text">${l.ann.text}</div>${l.ann.ex?'<div class="anno-ex">'+l.ann.ex+'</div>':''}</div>`;
+      row.addEventListener('click',()=>{
+        const wasOpen = row.classList.contains('open');
+        c.querySelectorAll('.line-row.open').forEach(r=>r.classList.remove('open'));
+        if(!wasOpen) row.classList.add('open');
       });
-    });
-
-    document.querySelectorAll('[data-open-about], #mobile-about-btn').forEach(button => {
-      button.addEventListener('click', () => openModal('about'));
-    });
-    document.querySelectorAll('[data-open-modules]').forEach(button => {
-      button.addEventListener('click', () => openModal('modules'));
-    });
-    document.querySelectorAll('[data-open-contacts]').forEach(button => {
-      button.addEventListener('click', () => openModal('contacts'));
-    });
-
-    document.getElementById('close-about').addEventListener('click', closeModals);
-    document.getElementById('close-modules').addEventListener('click', closeModals);
-    document.getElementById('close-contacts').addEventListener('click', closeModals);
-    Object.values(modals).forEach(modal => {
-      modal.addEventListener('click', event => {
-        if (event.target === modal) closeModals();
-      });
-    });
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') closeModals();
-    });
-
-    document.querySelectorAll('[data-theme-toggle]').forEach(button => {
-      button.addEventListener('click', event => {
-        applyTheme(document.body.classList.contains('light') ? 'dark' : 'light', event);
-      });
-    });
-
-    searchInput.addEventListener('input', renderWeeks);
-    sortSelect.addEventListener('change', renderWeeks);
-
-    document.getElementById('metric-weeks').textContent = WEEKS.length;
-    document.getElementById('metric-items').textContent = WEEKS.reduce((sum, week) => sum + week.questions, 0);
-
-    if (canUseStorage && localStorage.getItem('buspros_hub_theme') === 'light') {
-      document.body.classList.add('light');
+    } else {
+      row.innerHTML = `<div class="ln">${l.n}</div><div class="lc">${l.code}</div>`;
     }
-    renderWeeks();
-  </script>
+    c.appendChild(row);
+  });
+  if(lines.length>1){
+    const h = document.createElement('div');
+    h.className='hint';h.textContent='↑ Click any highlighted line to see explanation';
+    c.parentElement.insertBefore(h,c);
+  }
+}
+
+const KW='<span class="kw">',ST='<span class="st">',CM='<span class="cm">',SF='<span class="sf">',
+      FN='<span class="fn">',NM='<span class="nm">',RT='<span class="rt">',KY='<span class="ky">',
+      E='</span>';
+
+/* FOUNDATION LINES */
+makeLines('foundation-lines',[
+  {n:1, code:`${CM}"""System logic: Inventory setup, Cart, Pricing, Payment, Login"""${E}`,
+    ann:{tag:'Lines 1–2 — Module docstring',text:'A triple-quoted string at the very top of the file. It describes what this module does. Python does not execute it — it is documentation.',ex:null}},
+  {n:4, code:`${KW}import${E} datetime`,
+    ann:{tag:'Line 4 — import datetime',text:'Loads Python\'s built-in datetime module. Used in _generate_receipt() to stamp the date and time on receipts. Your promo code functions do not use it directly, but it is needed for the file to work.',ex:null}},
+  {n:5, code:`${KW}import${E} math`,
+    ann:{tag:'Line 5 — import math',text:'Loads Python\'s math module. Used in _pay_cash() to check for invalid numbers (NaN, infinity). Not used in your functions directly.',ex:null}},
+  {n:6, code:`${KW}from${E} structures ${KW}import${E} LinkedList, CartLinkedList, Stack, Queue`,
+    ann:{tag:'Line 6 — from structures import ...',text:'"from structures" means: look in the structures.py file. "import LinkedList, CartLinkedList, Stack, Queue" means: bring those 4 classes into this file so NUmart.__init__ can create them. Without this line, LinkedList() on line 30 would crash with a NameError.',ex:null}},
+  {n:8, code:`${CM}# ----- CONSTANTS -----${E}`,ann:null},
+]);
+
+/* INIT LINES */
+makeLines('init-lines',[
+  {n:26,code:`${KW}class${E} NUmart:`,
+    ann:{tag:'Line 26 — class NUmart:',text:'Defines the NUmart class — the blueprint for the entire store system. Everything inside it (all methods and attributes) belongs to this class. The colon : starts the class body.',ex:null}},
+  {n:29,code:`    ${KW}def${E} ${FN}__init__${E}(${SF}self${E}):`,
+    ann:{tag:'Line 29 — def __init__(self)',text:'The constructor. Runs automatically the moment store = NUmart() is called in main.py. "self" refers to the new object being created. No extra parameters needed because all starting values are hardcoded.',ex:'store = NUmart()  ← __init__ fires here immediately'}},
+  {n:30,code:`        ${SF}self${E}.inventory  = LinkedList()`,ann:{tag:'Line 30 — self.inventory',text:'Creates an empty LinkedList object and attaches it to this NUmart as the inventory attribute. LinkedList was imported from structures.py on line 6.',ex:null}},
+  {n:31,code:`        ${SF}self${E}.cart       = CartLinkedList()`,ann:{tag:'Line 31 — self.cart',text:'Creates an empty CartLinkedList and attaches it as self.cart. All cart operations (add, remove, compute total) happen through this object.',ex:null}},
+  {n:32,code:`        ${SF}self${E}.undo_stack = Stack()`,ann:{tag:'Line 32 — self.undo_stack',text:'Creates an empty Stack for tracking undo-able cart actions. Not directly used in your promo functions.',ex:null}},
+  {n:33,code:`        ${SF}self${E}.history    = Queue()`,ann:{tag:'Line 33 — self.history',text:'Creates an empty Queue to store completed transaction records. After payment, _generate_receipt() saves to this.',ex:null}},
+  {n:34,code:`        ${SF}self${E}.discount   = ${NM}0${E}                 ${CM}# current applied discount (%)${E}`,
+    ann:{tag:'Line 34 — self.discount = 0  ← YOUR attribute',text:'Sets the starting discount to 0. This is one of the two attributes YOUR functions own. apply_promo() sets it to 10/15/30/45. remove_promo() resets it to 0. get_final_total() reads it for math. display_price_summary() checks it before showing discount lines.',ex:'self.discount = 0    before any promo\nself.discount = 15   after STUDENT15 applied\nself.discount = 0    after remove_promo()'}},
+  {n:35,code:`        ${SF}self${E}.promo_used = ${ST}""${E}                ${CM}# currently applied promo code${E}`,
+    ann:{tag:'Line 35 — self.promo_used = ""  ← YOUR attribute',text:'Sets the starting promo code to an empty string. apply_promo() sets this to the code string like "STUDENT15". remove_promo() resets it to "". The promo guard in apply_promo() checks if this is truthy to block a second code.',ex:'self.promo_used = ""          before any promo (falsy)\nself.promo_used = "STUDENT15" after promo applied (truthy)\nself.promo_used = ""          after remove_promo() (falsy again)'}},
+  {n:36,code:`        ${SF}self${E}.${FN}_load_inventory${E}()              ${CM}# load the 25 pre-loaded items on startup${E}`,
+    ann:{tag:'Line 36 — self._load_inventory()',text:'Calls the _load_inventory() method immediately, which inserts all 25 school supply items into the inventory LinkedList. The underscore prefix (_) signals it is a private/internal method — not meant to be called from outside the class.',ex:null}},
+]);
+
+/* DICT_CODES LINES */
+makeLines('dict-lines',[
+  {n:9, code:`dict_Codes = {`,
+    ann:{tag:'Line 9 — dict_Codes = {',text:'Starts a dictionary literal. dict_Codes is a module-level variable — it lives outside the class so all methods can access it by name without self. The opening { marks the start of the dictionary.',ex:null}},
+  {n:10,code:`    ${ST}"SAVE10"${E}        : ${NM}10${E},`,
+    ann:{tag:'Line 10 — "SAVE10": 10',text:'Key-value pair. Key = "SAVE10" (string), Value = 10 (integer = 10% discount). The extra spaces before : are just alignment — Python ignores them. The comma separates it from the next pair.',ex:'dict_Codes["SAVE10"]  →  10'}},
+  {n:11,code:`    ${ST}"STUDENT15"${E}     : ${NM}15${E},`,
+    ann:{tag:'Line 11 — "STUDENT15": 15',text:'15% discount code. Key = "STUDENT15", Value = 15.',ex:null}},
+  {n:12,code:`    ${ST}"NUFV30"${E}        : ${NM}30${E},`,
+    ann:{tag:'Line 12 — "NUFV30": 30',text:'30% discount code for NU Fairview. Key = "NUFV30", Value = 30.',ex:null}},
+  {n:13,code:`    ${ST}"BACKTOSCHOOL45"${E}: ${NM}45${E} }`,
+    ann:{tag:'Line 13 — "BACKTOSCHOOL45": 45 }',text:'45% discount. The closing } ends the dictionary. No comma after the last item (optional in Python).',ex:'dict_Codes["BACKTOSCHOOL45"]  →  45'}},
+]);
+
+/* APPLY_PROMO LINES */
+makeLines('apply-lines',[
+  {n:206,code:`    ${KW}def${E} ${FN}apply_promo${E}(${SF}self${E}, code):`,
+    ann:{tag:'Line 206 — def apply_promo(self, code)',text:'Defines the method. "self" = the NUmart object (Python passes automatically). "code" = the promo string the user typed, passed by the caller (main.py). Together: def apply_promo(self, code) means "a method of NUmart that takes a code as input".',ex:'Caller: store.apply_promo("SAVE10")\nInside: self = store, code = "SAVE10"'}},
+  {n:207,code:`        ${CM}"""Apply a promo code if valid. Updates the discount rate."""${E}`,ann:{tag:'Line 207 — docstring',text:'Documentation string. Triple quotes. Not executed — just documents what the method does. Python saves it as __doc__ attribute.',ex:null}},
+  {n:208,code:`        code = code.${FN}strip${E}().${FN}upper${E}()`,
+    ann:{tag:'Line 208 — code = code.strip().upper()',text:'Normalizes the input. .strip() removes leading/trailing spaces. .upper() converts all letters to uppercase. This makes the check case-insensitive and space-tolerant. The result is reassigned back to "code" — it overwrites the variable with the cleaned version.',ex:'"  save10  " → strip() → "save10" → upper() → "SAVE10"\n"Student15" → strip() → "Student15" → upper() → "STUDENT15"'}},
+  {n:210,code:`        ${KW}if${E} ${SF}self${E}.promo_used:`,
+    ann:{tag:'Line 210 — if self.promo_used:',text:'Checks if a promo is already active. self.promo_used is truthy when it is not empty ("STUDENT15" = truthy, "" = falsy). If truthy, a promo is already applied — block the new one.',ex:'self.promo_used = ""          → falsy  → skip this block\nself.promo_used = "STUDENT15" → truthy → enter this block'}},
+  {n:211,code:`            print(${ST}f"\\n  [!] You can only use 1 promo code per transaction."${E})`,ann:{tag:'Line 211 — one promo limit message',text:'Tells the user they already have a code active. The \\n is a newline character — moves the cursor to a new line before printing.',ex:null}},
+  {n:212,code:`            print(${ST}f"\\n  [!] Remove '{${SF}self${E}.promo_used}' first before applying a new one."${E})`,
+    ann:{tag:'Line 212 — shows which code to remove',text:'Uses an f-string to embed self.promo_used in the message. So if SAVE10 is active, it prints: [!] Remove \'SAVE10\' first. The {self.promo_used} inside the f-string is replaced with the actual value.',ex:null}},
+  {n:213,code:`            ${KW}return${E} ${KW}False${E}`,
+    ann:{tag:'Line 213 — return False (early exit)',text:'Exits the function immediately. Returns False to signal failure. Nothing below this line runs when a promo is already active. The while True loop in main.py checks this — False = try again.',ex:null}},
+  {n:215,code:`        ${KW}if${E} code ${KW}in${E} dict_Codes:`,
+    ann:{tag:'Line 215 — if code in dict_Codes:',text:'"in" checks if code is a KEY in the dictionary. This is O(1) — instant lookup. If "SAVE10" is typed and cleaned, this evaluates True immediately. If "FAKE99", it evaluates False.',ex:'"SAVE10" in dict_Codes        → True\n"STUDENT15" in dict_Codes     → True\n"FAKE99" in dict_Codes        → False'}},
+  {n:216,code:`            ${SF}self${E}.discount = dict_Codes[code]`,
+    ann:{tag:'Line 216 — self.discount = dict_Codes[code]',text:'Retrieves the discount value from the dictionary using code as the key, then stores it in self.discount. This is the "=" assignment operator — it replaces the old value (0) with the new one (e.g. 15).',ex:'code = "STUDENT15"\ndict_Codes["STUDENT15"] → 15\nself.discount = 15'}},
+  {n:217,code:`            ${SF}self${E}.promo_used = code`,
+    ann:{tag:'Line 217 — self.promo_used = code',text:'Saves the code string itself into self.promo_used. This is used in two places: display_price_summary() shows "Promo: STUDENT15" and the guard on line 210 checks if it\'s not empty.',ex:'self.promo_used = "STUDENT15"'}},
+  {n:218,code:`            print(${ST}f"\\n  [OK] Promo code '{code}' applied! You get {${SF}self${E}.discount}% off."${E})`,ann:{tag:'Line 218 — success message',text:'Prints a confirmation with f-string. {code} inserts the promo code string. {self.discount} inserts the discount number.',ex:null}},
+  {n:219,code:`            ${KW}return${E} ${KW}True${E}`,
+    ann:{tag:'Line 219 — return True',text:'Exits the function. Returns True to signal success. The while True loop in main.py does "if store.apply_promo(code): break" — True causes the loop to stop.',ex:null}},
+  {n:220,code:`        ${KW}else${E}:`,ann:{tag:'Line 220 — else:',text:'Runs only if the "if code in dict_Codes" check on line 215 was False — meaning the code was not found in the dictionary.',ex:null}},
+  {n:221,code:`            print(${ST}f"\\n  [!] Invalid promo code '{code}'. Please try again."${E})`,ann:{tag:'Line 221 — invalid code message',text:'Tells the user the code is wrong. The retry while True loop in main.py will ask for input again.',ex:null}},
+  {n:222,code:`            ${KW}return${E} ${KW}False${E}`,
+    ann:{tag:'Line 222 — return False',text:'Returns False. The menu in main.py checks this — if False, the while loop continues and asks for input again.',ex:null}},
+]);
+
+/* REMOVE_PROMO LINES */
+makeLines('remove-lines',[
+  {n:224,code:`    ${KW}def${E} ${FN}remove_promo${E}(${SF}self${E}):`,
+    ann:{tag:'Line 224 — def remove_promo(self)',text:'Defines remove_promo. Only "self" — no other parameters needed. All the data it needs (self.discount, self.promo_used) is already stored inside the object.',ex:null}},
+  {n:225,code:`        ${CM}"""Remove the currently applied promo code."""${E}`,ann:{tag:'Line 225 — docstring',text:'Documentation string. Not executed.',ex:null}},
+  {n:226,code:`        ${KW}if${E} ${SF}self${E}.discount == ${NM}0${E}:`,
+    ann:{tag:'Line 226 — guard check: if self.discount == 0',text:'Checks if a promo is even active. discount == 0 means no promo was applied yet. The == is the equality comparison operator (not assignment). If True, skip the reset and show a warning.',ex:'self.discount = 0  → True  → no promo to remove\nself.discount = 15 → False → skip to the reset'}},
+  {n:227,code:`            print(${ST}"\\n  [!] No promo code is currently applied."${E})`,ann:{tag:'Line 227 — no promo warning',text:'Tells the user there is nothing to remove. Prevents silent confusing behavior.',ex:null}},
+  {n:228,code:`            ${KW}return${E}`,
+    ann:{tag:'Line 228 — return (early exit, no value)',text:'"return" with no value just exits the function immediately. The reset lines below do NOT run. This is called an early return or guard clause — stop before doing unnecessary work.',ex:null}},
+  {n:229,code:`        print(${ST}f"\\n  [OK] Promo code '{${SF}self${E}.promo_used}' removed."${E})`,
+    ann:{tag:'Line 229 — removed confirmation',text:'Prints which code was removed using self.promo_used in the f-string. This line only runs if line 226 was False (a promo WAS active).',ex:'self.promo_used = "SAVE10"\n→ Output: [OK] Promo code \'SAVE10\' removed.'}},
+  {n:230,code:`        ${SF}self${E}.discount   = ${NM}0${E}`,
+    ann:{tag:'Line 230 — reset discount to 0',text:'Sets self.discount back to 0. After this, get_final_total() computes total × (0/100) = 0 discount. The math goes back to full price.',ex:null}},
+  {n:231,code:`        ${SF}self${E}.promo_used = ${ST}""${E}`,
+    ann:{tag:'Line 231 — reset promo_used to empty string',text:'Clears the promo code name. After this, self.promo_used is "" (falsy), so the guard on line 210 of apply_promo() will allow a new code to be applied.',ex:null}},
+]);
+
+/* GET_FINAL_TOTAL LINES */
+makeLines('total-lines',[
+  {n:233,code:`    ${KW}def${E} ${FN}get_final_total${E}(${SF}self${E}):`,
+    ann:{tag:'Line 233 — def get_final_total(self)',text:'Defines get_final_total. Only self — no other parameters. All data it needs is already inside the object: self.cart (to compute total) and self.discount (the percentage).',ex:null}},
+  {n:234,code:`        ${CM}"""Calculate and return the final payable amount after discount."""${E}`,ann:{tag:'Line 234 — docstring',text:'Documentation. Not executed.',ex:null}},
+  {n:235,code:`        total      = ${SF}self${E}.cart.${FN}compute_total${E}()`,
+    ann:{tag:'Line 235 — total = self.cart.compute_total()',text:'Calls compute_total() on the CartLinkedList. That method loops through every node in the cart: price × quantity per item, adds them all up, returns a float. The result is the subtotal before any discount.',ex:'3x Ballpen ₱12 + 1x Notebook ₱60\n→ (12×3) + (60×1) = 36 + 60 = 96.0\ntotal = 96.0'}},
+  {n:236,code:`        discounted = total * (${SF}self${E}.discount / ${NM}100${E})`,
+    ann:{tag:'Line 236 — discounted = total × (self.discount / 100)',text:'"self.discount / 100" converts percentage to decimal: 15 / 100 = 0.15. Then multiplied by total: 96 × 0.15 = 14.4. This is how much money is DEDUCTED — not the final price, just the savings amount.',ex:'discount=15 → 15/100=0.15 → 96×0.15=14.4\ndiscounted = 14.4  ← the deduction amount'}},
+  {n:237,code:`        final      = total - discounted`,
+    ann:{tag:'Line 237 — final = total − discounted',text:'Subtracts the discount amount from the total. Result is what the user actually pays. If no promo: discounted=0, final=total. Math always works.',ex:'total=96.0, discounted=14.4\nfinal = 96.0 - 14.4 = 81.6 → ₱81.60 to pay'}},
+  {n:238,code:`        ${KW}return${E} total, discounted, final`,
+    ann:{tag:'Line 238 — return total, discounted, final',text:'Returns all 3 values at once as a tuple. The caller unpacks them: "total, discounted, final = self.get_final_total()". Three separate callers need different subsets — returning all 3 avoids recomputing.',ex:'Caller unpacks:\ntotal, discounted, final = self.get_final_total()\n# total=96.0, discounted=14.4, final=81.6'}},
+]);
+
+/* DISPLAY_PRICE_SUMMARY LINES */
+makeLines('display-lines',[
+  {n:240,code:`    ${KW}def${E} ${FN}display_price_summary${E}(${SF}self${E}):`,
+    ann:{tag:'Line 240 — def display_price_summary(self)',text:'Defines display_price_summary. Only self — reads everything from the object. No input from the user needed.',ex:null}},
+  {n:242,code:`        ${KW}if${E} ${SF}self${E}.cart.${FN}is_empty${E}():`,
+    ann:{tag:'Line 242 — guard: if self.cart.is_empty()',text:'Checks if the cart is empty before attempting to show a summary. is_empty() returns True if the cart has no items. If True, skip to print warning and return early.',ex:null}},
+  {n:243,code:`            print(${ST}"\\n  [!] Your cart is empty."${E})`,ann:{tag:'Line 243 — empty cart warning',text:'Prints the warning message.',ex:null}},
+  {n:244,code:`            ${KW}return${E}`,ann:{tag:'Line 244 — early return',text:'Exits immediately. Nothing below runs. Prevents showing a ₱0.00 price summary.',ex:null}},
+  {n:246,code:`        total, discounted, final = ${SF}self${E}.${FN}get_final_total${E}()`,
+    ann:{tag:'Line 246 — unpack 3 return values',text:'Calls your get_final_total() and unpacks the tuple into 3 separate variables in one line. This is Python\'s multiple assignment. All 3 are then used below for formatting.',ex:'get_final_total() returns (96.0, 14.4, 81.6)\ntotal=96.0, discounted=14.4, final=81.6'}},
+  {n:247,code:`        total_str      = ${ST}f"₱{total:.2f}"${E}`,
+    ann:{tag:'Line 247 — format total as peso string',text:'Creates a display string. f"₱{total:.2f}" — the :.2f format specifier shows exactly 2 decimal places. 96.0 becomes "₱96.00".',ex:'total=96.0 → total_str = "₱96.00"'}},
+  {n:248,code:`        discounted_str = ${ST}f"-₱{discounted:.2f}"${E}`,ann:{tag:'Line 248 — format discount as string',text:'Prefixes with - to show it as a deduction. 14.4 becomes "-₱14.40".',ex:'discounted=14.4 → discounted_str = "-₱14.40"'}},
+  {n:249,code:`        final_str      = ${ST}f"₱{final:.2f}"${E}`,ann:{tag:'Line 249 — format final as string',text:'81.6 becomes "₱81.60".',ex:null}},
+  {n:251,code:`        print(${ST}"\\n  +-----------------------------------+"${E} ...)`,ann:{tag:'Lines 251–254 — print the table header and subtotal',text:'Prints the box borders and the Subtotal row using total_str. The :<21 in the format spec left-aligns and pads to 21 characters so the | borders line up.',ex:null}},
+  {n:256,code:`        ${KW}if${E} ${SF}self${E}.discount > ${NM}0${E}:`,
+    ann:{tag:'Line 256 — conditional: only show promo if active',text:'Only prints the Promo and Discount rows when a promo is active. If discount=0, these lines are skipped — no blank "Promo: " or "Discount: -₱0.00" showing on screen.',ex:'discount=0  → skip (no promo lines shown)\ndiscount=15 → enter (promo and discount rows print)'}},
+  {n:257,code:`            print(${ST}f"  |  Promo     : {${SF}self${E}.promo_used:<21}|"${E} ...)`,
+    ann:{tag:'Lines 257–258 — print promo name and discount amount',text:'Two f-strings. promo_used:<21 left-aligns the code name to 21 chars. discounted_str:<21 does the same for the amount. Both keep the | borders aligned.',ex:'self.promo_used="STUDENT15"\n→ "  |  Promo     : STUDENT15             |"'}},
+  {n:260,code:`        print(${ST}"  +-----------------------------------+"${E} ...)`,ann:{tag:'Lines 260–262 — print total due and closing border',text:'Prints the TOTAL DUE line using final_str and the closing border.',ex:null}},
+]);
+
+/* MAIN.PY MENU LINES */
+makeLines('menu-lines',[
+  {n:142,code:`${KW}def${E} ${FN}menu_price_summary${E}(store):`,
+    ann:{tag:'Line 142 — def menu_price_summary(store)',text:'Defines the menu function. "store" is the NUmart object passed from main_menu(). This is a regular function (not a method) — it is outside the class. "store" here is an argument, not "self".',ex:'Called from main_menu: menu_price_summary(store)\n"store" = the NUmart object'}},
+  {n:143,code:`    ${CM}"""Show price summary and allow promo code application."""${E}`,ann:{tag:'Line 143 — docstring',text:'Documentation. Not executed.',ex:null}},
+  {n:144,code:`    ${KW}while${E} ${KW}True${E}:`,
+    ann:{tag:'Line 144 — while True: menu loop',text:'Infinite loop. The menu keeps showing until the user enters 0. Only a break statement can exit it.',ex:null}},
+  {n:150,code:`        choice = input(${ST}"\\n  Enter choice: "${E}).${FN}strip${E}()`,
+    ann:{tag:'Line 150 — get user menu choice',text:'Reads the user\'s choice. .strip() removes accidental spaces so " 2 " and "2" both work.',ex:null}},
+  {n:151,code:`        ${KW}if${E} choice == ${ST}"1"${E}:`,ann:{tag:'Line 151 — choice 1: view summary',text:'If user typed "1", run the indented block below.',ex:null}},
+  {n:152,code:`            store.${FN}display_price_summary${E}()`,
+    ann:{tag:'Line 152 — calls YOUR function',text:'Calls display_price_summary() on the store object — YOUR method in system.py. store.display_price_summary() → Python translates to NUmart.display_price_summary(store).',ex:null}},
+  {n:153,code:`            ${FN}pause${E}()`,ann:{tag:'Line 153 — pause',text:'Calls the pause() utility function from the top of main.py. It waits for the user to press Enter before redrawing the menu.',ex:null}},
+  {n:154,code:`        ${KW}elif${E} choice == ${ST}"2"${E}:`,ann:{tag:'Line 154 — choice 2: apply promo',text:'elif = "else if". Only checked if choice was not "1". If "2", show the promo input section.',ex:null}},
+  {n:162,code:`            ${KW}while${E} ${KW}True${E}:`,
+    ann:{tag:'Line 162 — retry loop for promo input',text:'Inner while True loop — keeps asking for a promo code until the user cancels (0) or enters a valid code. break exits it.',ex:null}},
+  {n:163,code:`                code = input(${ST}"\\n  Enter promo code (or 0 to return...): "${E}).${FN}strip${E}()`,
+    ann:{tag:'Line 163 — get promo code from user',text:'Reads the promo code string. .strip() removes spaces. The raw input is passed to apply_promo() which then does .upper() on it.',ex:null}},
+  {n:164,code:`                ${KW}if${E} code == ${ST}"0"${E}:`,ann:{tag:'Line 164 — cancel if user types 0',text:'If the user types "0", they want to cancel. Run the block below.',ex:null}},
+  {n:165,code:`                    print(${ST}"  [!] Promo code application cancelled."${E})`,ann:{tag:'Line 165 — cancel message',text:'Tells the user the action was cancelled.',ex:null}},
+  {n:166,code:`                    ${KW}break${E}`,
+    ann:{tag:'Line 166 — break: exit retry loop',text:'Exits the while True input loop. No promo applied. Control returns to the menu choice loop.',ex:null}},
+  {n:167,code:`                ${KW}if${E} code == ${ST}""${E}:`,ann:{tag:'Line 167 — catch empty input',text:'If the user just pressed Enter without typing anything, code is an empty string. Block below handles it.',ex:null}},
+  {n:168,code:`                    print(${ST}"  [!] Promo code cannot be empty. Please try again."${E})`,ann:{tag:'Line 168 — empty input warning',text:'Warns the user.',ex:null}},
+  {n:169,code:`                    ${KW}continue${E}`,
+    ann:{tag:'Line 169 — continue: skip, loop again',text:'Skips the rest of this loop cycle and goes back to the top of the while True loop — immediately asks for input again. Does NOT exit the loop like break.',ex:null}},
+  {n:170,code:`                ${KW}if${E} store.${FN}apply_promo${E}(code):`,
+    ann:{tag:'Line 170 — call YOUR apply_promo(), check result',text:'Calls apply_promo(code) — YOUR function in system.py. If it returns True (valid code applied), enter the if block. If it returns False (invalid), skip the block and loop continues.',ex:'apply_promo("SAVE10")    → True  → enter block\napply_promo("FAKE99")    → False → loop again'}},
+  {n:171,code:`                    ${FN}pause${E}()`,ann:{tag:'Line 171 — pause on success',text:'Waits for Enter so the user can read the [OK] confirmation before the menu redraws.',ex:null}},
+  {n:172,code:`                    ${KW}break${E}`,
+    ann:{tag:'Line 172 — break: exit on success',text:'Exits the while True input loop after a successful promo application. Returns to the menu.',ex:null}},
+  {n:174,code:`        ${KW}elif${E} choice == ${ST}"3"${E}:`,ann:{tag:'Line 174 — choice 3: remove promo',text:'If user typed "3", run the remove block.',ex:null}},
+  {n:175,code:`            store.${FN}remove_promo${E}()`,
+    ann:{tag:'Line 175 — calls YOUR remove_promo()',text:'Calls remove_promo() on the store — YOUR method. Resets self.discount to 0 and self.promo_used to "".',ex:null}},
+  {n:176,code:`            ${FN}pause${E}()`,ann:{tag:'Line 176 — pause',text:'Wait for Enter.',ex:null}},
+  {n:177,code:`        ${KW}elif${E} choice == ${ST}"0"${E}:`,ann:{tag:'Line 177 — choice 0: go back',text:'If user typed "0", exit the menu.',ex:null}},
+  {n:178,code:`            ${KW}break${E}`,
+    ann:{tag:'Line 178 — break: exit menu loop',text:'Exits the outer while True menu loop. Returns to the main menu.',ex:null}},
+  {n:179,code:`        ${KW}else${E}:`,ann:{tag:'Line 179 — else: invalid choice',text:'Runs if none of the if/elif conditions matched — the user typed something invalid.',ex:null}},
+  {n:180,code:`            print(${ST}"\\n  [!] Invalid choice. Please enter 0-3."${E})`,ann:{tag:'Line 180 — invalid warning',text:'Warns the user and the menu loop continues.',ex:null}},
+]);
+
+/* TAB SWITCHER */
+function switchTab(group, tab){
+  document.querySelectorAll(`#other-tabs .tab-btn`).forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab===tab);
+  });
+  ['display-cart','process-pay','receipt'].forEach(t=>{
+    const p=document.getElementById('other-'+t);
+    if(p) p.classList.toggle('active', t===tab);
+  });
+}
+
+/* SYNTAX TABLE */
+const synData=[
+  ['class NUmart:',       'Defines the NUmart class — the blueprint',                            'class NUmart:'],
+  ['def __init__(self):', 'Constructor — runs on NUmart() automatically',                        'def __init__(self):'],
+  ['self.discount = 0',   'Creates attribute discount on the object, sets to 0',                 'line 34'],
+  ['self.promo_used = "\"','Creates attribute promo_used on the object, sets to empty string',   'line 35'],
+  ['def apply_promo(self, code):', 'Method with 1 extra parameter. self=auto, code=you pass',   'store.apply_promo("SAVE10")'],
+  ['code.strip().upper()', 'Remove spaces then uppercase. Chained method calls',                  'line 208'],
+  ['if self.promo_used:',  'Truthy check — "" is falsy, any string is truthy',                   'line 210'],
+  ['if code in dict_Codes:','Check if code is a KEY in the dictionary. O(1) lookup',             'line 215'],
+  ['dict_Codes[code]',     'Dictionary access by key — returns the value (int)',                  'line 216'],
+  ['return True',          'Exit function, send True to caller (success signal)',                  'line 219'],
+  ['return False',         'Exit function, send False to caller (failure signal)',                 'lines 213, 222'],
+  ['return',               'Exit function immediately, send nothing',                              'line 228'],
+  ['if self.discount == 0:','Equality check with ==. Single = is assignment, == is comparison', 'line 226'],
+  ['total * (self.discount / 100)', 'Divide by 100 converts % to decimal for multiplication',    'line 236'],
+  ['return total, discounted, final', 'Return 3 values as a tuple. Caller unpacks with a, b, c =', 'line 238'],
+  ['f"₱{total:.2f}"',     'f-string: :.2f = show exactly 2 decimal places',                     'line 247'],
+  ['if self.discount > 0:','Greater-than check. Only show discount lines if promo active',       'line 256'],
+  ['while True:',          'Infinite loop — runs until break is hit',                             'menu loops'],
+  ['break',                'Stop the loop immediately, jump out',                                 'line 166, 172, 178'],
+  ['continue',             'Skip this cycle, go back to loop start',                              'line 169'],
+  ['elif',                 'Short for "else if" — checked only if previous if was False',        'menu choices'],
+];
+const sb=document.getElementById('syn-body');
+synData.forEach(r=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>`;
+  sb.appendChild(tr);
+});
+
+/* Q&A */
+const qaData=[
+  {q:'What is your role in the group project?',
+   a:'My role is Price Calculation and Promo Codes. I am responsible for: the dict_Codes constant (lines 9–13), apply_promo() (lines 206–222), remove_promo() (lines 224–231), get_final_total() (lines 233–238), display_price_summary() (lines 240–262), and the price/promo menu in main.py (lines 142–190).'},
+  {q:'What are the two attributes your functions use?',
+   a:'self.discount and self.promo_used. Both are initialized in __init__ on lines 34–35. self.discount is an integer storing the active discount percentage (starts at 0). self.promo_used is a string storing the active promo code name (starts as empty string "").'},
+  {q:'Why is dict_Codes defined outside the class?',
+   a:'Because it is a constant — it never changes at runtime. Placing it at module level means all methods in NUmart can access it directly by name without needing self. It is shared across the entire file.'},
+  {q:'What does .strip().upper() do in apply_promo()?',
+   a:'.strip() removes accidental spaces from the beginning and end of the input. .upper() converts all letters to uppercase. Together they normalize the input so "save10", " SAVE10 ", and "Save10" all become "SAVE10" — matching the dictionary key correctly. Without this, lowercase input would always return False even for valid codes.',
+   code:`"  save10  " → strip() → "save10" → upper() → "SAVE10"`},
+  {q:'How does apply_promo() prevent two promo codes at once?',
+   a:'It has a guard on line 210: "if self.promo_used:" — if self.promo_used is not empty, a promo is already active. The function prints a message and returns False immediately, blocking the new code. The user must call remove_promo() first to clear self.promo_used back to "" before a new code can be applied.'},
+  {q:'What does "if code in dict_Codes" do?',
+   a:'"in" checks if code is a KEY in the dictionary. It evaluates to True if found, False if not. It is O(1) — instant lookup regardless of dictionary size. "SAVE10" in dict_Codes → True. "FAKE99" in dict_Codes → False.',
+   code:`"STUDENT15" in dict_Codes  →  True\n"FAKE99"    in dict_Codes  →  False`},
+  {q:'What does return True and return False do?',
+   a:'return exits the function immediately. return True sends the value True back to the caller. return False sends False. In apply_promo(), the main.py menu checks this: "if store.apply_promo(code): break" — True = success, exit the retry loop. False = failure, loop again and ask for input.'},
+  {q:'Why does remove_promo() reset both attributes?',
+   a:'Both self.discount and self.promo_used must be cleared together. If only self.discount is reset to 0, self.promo_used still holds "STUDENT15" — the guard in apply_promo() would see it as truthy and permanently block any new promo from being applied. Both must be cleared at the same time.'},
+  {q:'Why does get_final_total() return three values?',
+   a:'Because three different callers need different subsets. display_price_summary() needs all three to show the breakdown. process_payment() needs final for the Amount Due display. _generate_receipt() needs all three for the receipt printout. Returning all three at once avoids recomputing the same math in multiple places.',
+   code:`return total, discounted, final\n# Unpacked by caller:\ntotal, discounted, final = self.get_final_total()`},
+  {q:'What does dividing by 100 do in get_final_total()?',
+   a:'It converts the percentage (integer) to a decimal for multiplication. self.discount = 15, so 15 / 100 = 0.15. Then total × 0.15 gives the correct deduction. Without the /100, total × 15 = 3000 which is completely wrong.',
+   code:`discount = 15\ntotal    = 200\n\n# Wrong (missing /100):\ndiscounted = 200 * 15  →  3000  ← WRONG\n\n# Correct:\ndiscounted = 200 * (15/100)  →  30.0  ← CORRECT`},
+  {q:'What does the "if self.discount > 0" check do in display_price_summary()?',
+   a:'It conditionally shows the Promo and Discount rows. If no promo is active (discount = 0), those two rows are skipped entirely — the summary only shows Subtotal and Total Due. This prevents confusing output like "Promo: " with a blank name and "Discount: -₱0.00" appearing on screen.'},
+  {q:'What is :.2f inside an f-string?',
+   a:'It is a format specifier. :.2f means "format this number as a float with exactly 2 decimal places." Without it, 170.0 would print as 170.0. With it, it prints as ₱170.00. The f at the end stands for fixed-point notation.',
+   code:`total = 96.0\nf"₱{total:.2f}"  →  "₱96.00"`},
+  {q:'What is the difference between = and ==?',
+   a:'= is the assignment operator — it stores a value into a variable: self.discount = 0. == is the equality comparison operator — it checks if two values are equal and returns True or False: if self.discount == 0. Using = inside an if condition is a common bug — Python will raise a SyntaxError.',
+   code:`self.discount = 0      # assignment: set to 0\nif self.discount == 0: # comparison: is it 0?`},
+  {q:'What is the difference between break and continue?',
+   a:'break stops the loop entirely and jumps out of it. continue skips the rest of the current cycle and goes back to the top of the loop for the next iteration. In the promo input loop: if code is "0" → break (cancel, exit). If code is "" → continue (empty input, ask again).',
+   code:`while True:\n    code = input("Promo: ")\n    if code == "0": break     # EXIT loop\n    if code == "":  continue  # SKIP, ask again\n    if store.apply_promo(code): break  # SUCCESS, exit`},
+  {q:'What is an f-string?',
+   a:'An f-string is a formatted string literal. Prefix the string with f and use {} inside to embed variable values directly. Python evaluates the expression inside {} and inserts the result.',
+   code:`name = "STUDENT15"\ndiscount = 15\nf"Promo \'{name}\' gives {discount}% off."\n→ "Promo 'STUDENT15' gives 15% off."`},
+  {q:'What is a guard clause?',
+   a:'A guard clause is an early return at the start of a function that checks for invalid or edge-case conditions and exits before running the main logic. In remove_promo(): "if self.discount == 0: return" — stops the function if no promo is active. In display_price_summary(): "if self.cart.is_empty(): return" — stops before showing a ₱0.00 summary.'},
+  {q:'Why does display_price_summary() call get_final_total() instead of computing directly?',
+   a:'To avoid duplicating the math. get_final_total() is the single source of truth for the discount calculation. display_price_summary() just calls it and unpacks the results. If the formula ever changes, only get_final_total() needs to be updated — not every function that shows prices.'},
+];
+const ql=document.getElementById('qa-list');
+qaData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='qa-item';
+  el.innerHTML=`<div class="qa-q"><span>${item.q}</span><i class="qa-icon" aria-hidden="true">+</i></div><div class="qa-a">${item.a}${item.code?'<div class="cb" style="margin-top:8px">'+item.code+'</div>':''}</div>`;
+  el.querySelector('.qa-q').addEventListener('click',()=>el.classList.toggle('open'));
+  ql.appendChild(el);
+});
+</script>
 </body>
 </html>
