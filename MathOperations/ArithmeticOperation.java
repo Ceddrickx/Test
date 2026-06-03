@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class ArithmeticOperation {
-    // Create a single scanner object to take inputs
+    // Create a single scanner object to take inputsA
     Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
